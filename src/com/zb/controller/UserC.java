@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.UserBiz;
-import com.zb.entity.Project;
 import com.zb.entity.User;
 import com.zb.util.PageUtil;
 
@@ -19,6 +18,7 @@ public class UserC {
 	@Autowired
 	private UserBiz userBiz;
 	
+	@ResponseBody
 	@RequestMapping("/addUser")
 	public Map<String,String> addUser(User user) {
 		boolean f = userBiz.addUser(user);
@@ -32,6 +32,7 @@ public class UserC {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping("/updateUser")
 	public Map<String,String> updateProject(User user) {
 		boolean f = userBiz.updateUser(user);
@@ -44,6 +45,7 @@ public class UserC {
 		return map;
 	}
 	
+	@ResponseBody
 	@RequestMapping("/deleteUser")
 	public Map<String,String> deleteUser(Integer uid) {
 		boolean f = userBiz.deleteUser(uid);
@@ -59,14 +61,14 @@ public class UserC {
 	@ResponseBody
 	@RequestMapping("/searchUser")
 	public PageUtil<User> searchUser(String name,Integer pid,Integer index,Integer size,Integer uid){
-		PageUtil<Project> page = new PageUtil<Project>();
+		PageUtil<User> page = new PageUtil<User>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
 		}
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<User> pageUtil = userBiz.searchUser(name, pid, index, size, uid);
+		PageUtil<User> pageUtil = userBiz.searchUser(name, pid, page, uid);
 		return pageUtil;
 	}
 

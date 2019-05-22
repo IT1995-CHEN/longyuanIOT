@@ -11,6 +11,6 @@ public interface UserBiz {
 
 	public boolean deleteUser(Integer uid);
 
-	public PageUtil<User> searchUser(String name,Integer pid,Integer index,Integer size,Integer uid);
+	public PageUtil<User> searchUser(String name,Integer pid,PageUtil<User> page,Integer uid);
 
 }

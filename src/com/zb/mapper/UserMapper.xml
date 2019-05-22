@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.UserMapper">
+
+	<resultMap type="com.zb.entity.User" id="userMap">
+		<id column="uid" property="uid" />
+		<result column="pid" property="pid" />
+		<result column="rid" property="rid" />
+		<result column="name" property="name" />
+		<result column="password" property="password" />
+		<result column="trueName" property="trueName" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+	</resultMap>
+
+	<insert id="addUser" parameterType="User">
+		insert into db_user(uid,pid,rid,name,password,trueName,createTime,updateTime) values(null,#{pid},#{rid},#{name},#{password},#{trueName},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+	</insert>
+	
+	<delete id="deleteUser" parameterType="Integer">
+		delete from db_user where uid = #{uid}
+	</delete>
+	
+	<update id="updateUser" parameterType="User">
+		update db_user
+		<set>
+			<if test="pid!=null and pid != ''">pid=#{pid},</if>
+			<if test="rid!=null and rid != ''">rid=#{rid},</if>
+			<if test="name!=null and name != ''">name=#{name},</if>
+			<if test="password!=null and password != ''">password=#{password},</if>
+			<if test="trueName!=null and trueName != ''">trueName=#{trueName},</if>
+			updateTime=(SELECT CURRENT_TIMESTAMP)
+		</set>
+		where uid = #{uid}
+	</update>
+
+	<sql id="getUser">
+		<if test="name!=null and name != ''">
+			and name=#{name}
+		</if>
+		<if test="pid!=null and pid != ''">
+			and pid=#{pid}
+		</if>
+		<if test="uid!=null and uid != ''">
+			and uid=#{uid}
+		</if>
+	</sql>
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from db_user where 1 = 1
+	 	<include refid="getUser"></include>
+	</select>
+
+	<select id="searchUser" resultMap="userMap">
+		select * from db_user where 1 = 1
+		<include refid="getUser"></include>
+		order by uid desc
+	  	limit #{index} ,#{size}
+	</select>
+
+</mapper>
