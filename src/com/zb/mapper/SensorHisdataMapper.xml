@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.SensorHisdataMapper">
+
+	<resultMap type="com.zb.entity.SensorHisdataComb" id="sensorHisdataCombMap">
+		<id column="hid" property="hid" />
+		<result column="hisVal" property="hisVal" />
+		<result column="createTime" property="createTime" />
+		<association property="project" javaType="com.zb.entity.Project" column="pid">
+			<id column="pid" property="pid" />
+			<result column="projectName" property="projectName" />
+			<result column="projectAddress" property="projectAddress" />
+			<result column="log" property="log" />
+			<result column="lat" property="lat" />
+			<result column="projectInfo" property="projectInfo" />
+			<result column="projectImg" property="projectImg" />
+			<result column="createTime" property="createTime" />
+		</association>
+		<association property="deviceInfo" javaType="com.zb.entity.DeviceInfo" column="deviceNum">
+			<id column="did" property="did" />
+			<result column="deviceName" property="deviceName" />
+			<result column="deviceNum" property="deviceNum" />
+			<result column="deviceDes" property="deviceDes" />
+			<result column="createTime" property="createTime" />
+		</association>
+	</resultMap>
+	
+
+	<insert id="addHisData" parameterType="SensorHisdata">
+		insert into db_sensorhisdata(hid,pid,deviceNum,hisVal,createTime) values(null,#{pid},#{deviceNum},#{hisVal},CURRENT_TIMESTAMP)
+	</insert>
+	
+
+
+	<sql id="getSensorHisdata">
+		<if test="pid!=null and pid != ''">
+			and p.pid=#{pid}
+		</if>
+		<if test="deviceNum!=null and deviceNum != ''">
+			and d.deviceNum=#{deviceNum}
+		</if>
+		<if test="beginTime!=null and beginTime != ''">
+			and DATE_FORMAT(h.createTime,'%Y-%m-%d')&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null and endTime != ''">
+			and DATE_FORMAT(h.createTime,'%Y-%m-%d')&lt;=#{endTime}
+		</if>
+	</sql>
+
+	<select id="searchCount" resultType="Integer">
+		select count(*)
+		from db_sensorhisdata h
+		left join db_project p on h.pid = p.pid
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
+	 	<include refid="getSensorHisdata"></include>
+	</select>
+
+	<select id="searchHisData" resultMap="sensorHisdataCombMap">
+		select h.*,p.*,d.*
+		from db_sensorhisdata h
+		left join db_project p on h.pid = p.pid
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
+		<include refid="getSensorHisdata"></include>
+		order by hid desc
+	  	limit #{index} ,#{size}
+	</select>
+	
+	<sql id="getHisdata">
+		<if test="pid!=null and pid != ''">
+			and p.pid=#{pid}
+		</if>
+		<if test="deviceDes!=null and deviceDes != ''">
+			and d.deviceDes=#{deviceDes}
+		</if>
+	</sql>
+	
+	<select id="selectHisData" resultMap="sensorHisdataCombMap">
+		select h.*,p.*,d.*
+		from db_sensorhisdata h
+		left join db_project p on h.pid = p.pid
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
+		<include refid="getHisdata"></include>
+		order by hid desc
+	</select>
+</mapper>
