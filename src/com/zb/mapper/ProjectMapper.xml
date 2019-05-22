@@ -2,7 +2,6 @@
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zb.mapper.ProjectMapper">
 
-
 	<resultMap type="com.zb.entity.Project" id="projectMap">
 		<id column="pid" property="pid" />
 		<result column="projectName" property="projectName" />

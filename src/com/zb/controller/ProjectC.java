@@ -19,6 +19,7 @@ public class ProjectC {
 	@Autowired
 	private ProjectBiz projectBiz;
 	
+	@ResponseBody
 	@RequestMapping("/addProject")
 	public Map<String,String> addProject(Project project) {
 		boolean f = projectBiz.addProject(project);
@@ -32,6 +33,7 @@ public class ProjectC {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping("/updateProject")
 	public Map<String,String> updateProject(Project project) {
 		boolean f = projectBiz.updateProject(project);
@@ -44,6 +46,7 @@ public class ProjectC {
 		return map;
 	}
 	
+	@ResponseBody
 	@RequestMapping("/deleteProject")
 	public Map<String,String> deleteProject(Integer pid) {
 		boolean f = projectBiz.deleteProject(pid);
