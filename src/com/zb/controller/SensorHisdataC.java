@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.SensorHisdataBiz;
 import com.zb.entity.SensorHisdata;
+import com.zb.entity.SensorHisdataComb;
 import com.zb.util.PageUtil;
 
 @Controller
@@ -19,7 +20,7 @@ public class SensorHisdataC {
 	@Autowired
 	private SensorHisdataBiz sensorHisBiz;
 
-
+	@ResponseBody
 	@RequestMapping("/addHisData")
 	public Map<String,String> addHisData(SensorHisdata sensorHis) {
 		boolean f = sensorHisBiz.addHisData(sensorHis);
@@ -34,15 +35,15 @@ public class SensorHisdataC {
 
 	@ResponseBody
 	@RequestMapping("/searchHisData")
-	public PageUtil<SensorHisdata> searchHisData(Integer pid,Integer index,Integer size,String deviceNum,String beginTime,String endTime){
-		PageUtil<SensorHisdata> page = new PageUtil<SensorHisdata>();
+	public PageUtil<SensorHisdataComb> searchHisData(Integer pid,Integer index,Integer size,String deviceNum,String beginTime,String endTime){
+		PageUtil<SensorHisdataComb> page = new PageUtil<SensorHisdataComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
 		}
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<SensorHisdata> pageUtil = sensorHisBiz.searchHisData(pid, index, size,deviceNum,beginTime,endTime);
+		PageUtil<SensorHisdataComb> pageUtil = sensorHisBiz.searchHisData(pid,page,deviceNum,beginTime,endTime);
 		return pageUtil;
 	}
 
