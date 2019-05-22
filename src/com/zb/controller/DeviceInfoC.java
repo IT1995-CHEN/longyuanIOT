@@ -18,6 +18,7 @@ public class DeviceInfoC {
 	@Autowired
 	private DeviceInfoBiz deviceBiz;
 	
+	@ResponseBody
 	@RequestMapping("/addDevice")
 	public Map<String,String> addDevice(DeviceInfo device) {
 		boolean f = deviceBiz.addDevice(device);
@@ -31,6 +32,7 @@ public class DeviceInfoC {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping("/updateDevice")
 	public Map<String,String> updateDevice(DeviceInfo device) {
 		boolean f = deviceBiz.updateDevice(device);
@@ -43,6 +45,7 @@ public class DeviceInfoC {
 		return map;
 	}
 	
+	@ResponseBody
 	@RequestMapping("/deleteDevice")
 	public Map<String,String> deleteDevice(Integer did) {
 		boolean f = deviceBiz.deleteDevice(did);

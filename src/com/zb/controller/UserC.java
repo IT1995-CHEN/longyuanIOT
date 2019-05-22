@@ -19,6 +19,7 @@ public class UserC {
 	@Autowired
 	private UserBiz userBiz;
 	
+	@ResponseBody
 	@RequestMapping("/addUser")
 	public Map<String,String> addUser(User user) {
 		boolean f = userBiz.addUser(user);
@@ -32,6 +33,7 @@ public class UserC {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping("/updateUser")
 	public Map<String,String> updateProject(User user) {
 		boolean f = userBiz.updateUser(user);
@@ -44,6 +46,7 @@ public class UserC {
 		return map;
 	}
 	
+	@ResponseBody
 	@RequestMapping("/deleteUser")
 	public Map<String,String> deleteUser(Integer uid) {
 		boolean f = userBiz.deleteUser(uid);

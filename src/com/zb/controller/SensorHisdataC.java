@@ -19,7 +19,7 @@ public class SensorHisdataC {
 	@Autowired
 	private SensorHisdataBiz sensorHisBiz;
 
-
+	@ResponseBody
 	@RequestMapping("/addHisData")
 	public Map<String,String> addHisData(SensorHisdata sensorHis) {
 		boolean f = sensorHisBiz.addHisData(sensorHis);

@@ -18,6 +18,7 @@ public class WarnC {
 	@Autowired
 	private WarnBiz warnBiz;
 
+	@ResponseBody
 	@RequestMapping("/addWarn")
 	public Map<String,String> addWarn(Warn warn) {
 		boolean f = warnBiz.addWarn(warn);

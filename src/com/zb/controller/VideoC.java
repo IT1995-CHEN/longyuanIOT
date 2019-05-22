@@ -19,6 +19,7 @@ public class VideoC {
 	@Autowired
 	private VideoBiz videoBiz;
 	
+	@ResponseBody
 	@RequestMapping("/addVideo")
 	public Map<String,String> addVideo(Video video) {
 		boolean f = videoBiz.addVideo(video);
@@ -32,6 +33,7 @@ public class VideoC {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping("/updateVideo")
 	public Map<String,String> updateVideo(Video video) {
 		boolean f = videoBiz.updateVideo(video);
@@ -44,6 +46,7 @@ public class VideoC {
 		return map;
 	}
 	
+	@ResponseBody
 	@RequestMapping("/deleteVideo")
 	public Map<String,String> deleteVideo(Integer vid) {
 		boolean f = videoBiz.deleteVideo(vid);

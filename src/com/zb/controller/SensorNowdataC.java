@@ -18,6 +18,7 @@ public class SensorNowdataC {
 	@Autowired
 	private SensorNowdataBiz sensorNowBiz;
 	
+	@ResponseBody
 	@RequestMapping("/addNowData")
 	public Map<String,String> addNowData(SensorNowdata sensorNow) {
 		boolean f = sensorNowBiz.addNowData(sensorNow);
@@ -31,6 +32,7 @@ public class SensorNowdataC {
 		
 	}
 	
+	@ResponseBody
 	@RequestMapping("/updateNowData")
 	public Map<String,String> updateNowData(SensorNowdata sensorNow) {
 		boolean f = sensorNowBiz.updateNowData(sensorNow);
