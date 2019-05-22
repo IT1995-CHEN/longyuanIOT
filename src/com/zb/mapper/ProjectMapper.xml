@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.ProjectMapper">
+
+
+	<resultMap type="com.zb.entity.Project" id="projectMap">
+		<id column="pid" property="pid" />
+		<result column="projectName" property="projectName" />
+		<result column="projectAddress" property="projectAddress" />
+		<result column="log" property="log" />
+		<result column="lat" property="lat" />
+		<result column="projectInfo" property="projectInfo" />
+		<result column="projectImg" property="projectImg" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<insert id="addProject" parameterType="Project">
+		insert into db_project(pid,projectName,projectAddress,log,lat,projectInfo,projectImg,createTime) values(null,#{projectName},#{projectAddress},#{log},#{lat},#{projectInfo},#{projectImg},CURRENT_TIMESTAMP)
+	</insert>
+	
+	<delete id="deleteProject" parameterType="Integer">
+		delete from db_project where pid = #{pid}
+	</delete>
+	
+	<update id="updateProject" parameterType="Project">
+		update db_project
+		<set>
+			<if test="projectName!=null and projectName != ''">projectName=#{projectName},</if>
+			<if test="projectAddress!=null and projectAddress != ''">projectAddress=#{projectAddress},</if>
+			<if test="log!=null and log != ''">log=#{log},</if>
+			<if test="lat!=null and lat != ''">lat=#{lat},</if>
+			<if test="projectInfo!=null and projectInfo != ''">projectInfo=#{projectInfo},</if>
+			<if test="projectImg!=null and projectImg != ''">projectImg=#{projectImg},</if>
+			createTime=(SELECT CURRENT_TIMESTAMP)
+		</set>
+		where pid = #{pid}
+	</update>
+
+	<sql id="getProject">
+		<if test="projectName!=null and projectName != ''">
+			and projectName=#{projectName}
+		</if>
+	</sql>
+
+	<select id="searchCount" resultType="Integer">
+		select count(*) from db_project where 1 = 1
+	 	<include refid="getProject"></include>
+	</select>
+
+	<select id="searchProject" resultMap="projectMap">
+		select * from db_project where 1 = 1
+		<include refid="getProject"></include>
+		order by pid desc
+	  	limit #{index} ,#{size}
+	</select>
+	
+	<select id="selectProject" resultMap="projectMap">
+		select pid,projectName from db_project order by pid desc
+	</select>
+</mapper>

@@ -13,7 +13,7 @@ public interface ProjectBiz {
 	
 	public boolean deleteProject(Integer pid);
 	
-	public PageUtil<Project> searchProject(String projectName,Integer index,Integer size);
+	public PageUtil<Project> searchProject(String projectName,PageUtil<Project> page);
 	
 	public List<Project> selectProject();
 }

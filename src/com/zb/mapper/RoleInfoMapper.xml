@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zb.mapper.RoleinfoMapper">
+<mapper namespace="com.zb.mapper.RoleInfoMapper">
 
 
 	<resultMap type="com.zb.entity.RoleInfo" id="roleMap">
@@ -10,10 +10,22 @@
 	</resultMap>
 
 
-
-	<select id="selectRole" resultMap="roleMap">
-		SELECT
-		* FROM db_roleinfo
-
-	</select>
+	<insert id="add">
+		insert into db_hisdata(sensorId,preOperation,postOperation,operation,postOperationData,operatingTime) 
+		value(#{sensorId},#{preOperation},#{postOperation},#{operation},#{postOperationData},now())
+	</insert>
+	
+	<!-- 删除db_hisdata表数据记录数据 -->
+	<delete id="de">
+		delete from db_hisdata where hisId=#{hisId}
+	</delete>
+	
+	<!-- 硬件部门修改db_hisdata表数据记录数据 -->
+	<update id="up">
+		update db_hisdata set 
+		sensorId=#{sensorId},preOperation=#{preOperation},postOperation=#{postOperation},operation=#{operation},postOperationData=#{postOperationData},operatingTime=now() 
+		where hisId=#{hisId}
+	</update>
+	
+	
 </mapper>

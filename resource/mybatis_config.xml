@@ -6,8 +6,12 @@
 		<setting name="logImpl" value="LOG4J"></setting>
 	</settings>
 
+	<typeAliases>
+		<!-- 根据包名配置别名，后面写名字的时候，自动在签名添加如下前缀 -->
+		<package name="com.zb.entity"/>
+	</typeAliases>
+		
 	<mappers>
-		<mapper resource="com/zb/mapper/RoleInfoMapper.xml" />
-
+		<package name="com.zb.mapper"/>
 	</mappers>
 </configuration>

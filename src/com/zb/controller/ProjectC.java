@@ -66,7 +66,7 @@ public class ProjectC {
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<Project> pageUtil = projectBiz.searchProject(projectName, index, size);
+		PageUtil<Project> pageUtil = projectBiz.searchProject(projectName,page);
 		return pageUtil;
 	}
 	

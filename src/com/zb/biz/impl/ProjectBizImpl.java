@@ -2,32 +2,50 @@ package com.zb.biz.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zb.biz.ProjectBiz;
 import com.zb.entity.Project;
+import com.zb.mapper.ProjectMapper;
 import com.zb.util.PageUtil;
 
 @Service("db_project")
 public class ProjectBizImpl implements ProjectBiz {
+	@Autowired
+	private ProjectMapper projectMapper;
 
 	public boolean addProject(Project project){
-		return false;
+		boolean flag = projectMapper.addProject(project); 
+		
+		return flag;
 	}
 	
 	public boolean updateProject(Project project){
-		return false;
+		boolean flag = projectMapper.updateProject(project); 
+		
+		return flag;
 	}
 	
 	public boolean deleteProject(Integer pid){
-		return false;
+		boolean flag = projectMapper.deleteProject(pid); 
+		
+		return flag;
 	}
 	
-	public PageUtil<Project> searchProject(String projectName,Integer index,Integer size){
-		return null;
+	public PageUtil<Project> searchProject(String projectName,PageUtil<Project> page){
+		List<Project> projects = projectMapper.searchProject(projectName,(page.getIndex() - 1) * page.getSize(), page.getSize());
+		page.setPage(projects);
+		
+		int count = projectMapper.searchCount(projectName);
+		page.setCount(count);
+		
+		return page;
 	}
 	
 	public List<Project> selectProject(){
-		return null;
+		List<Project> projects = projectMapper.selectProject();
+		
+		return projects;
 	}
 }
