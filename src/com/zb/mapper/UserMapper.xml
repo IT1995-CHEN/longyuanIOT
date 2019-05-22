@@ -2,15 +2,27 @@
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zb.mapper.UserMapper">
 
-	<resultMap type="com.zb.entity.User" id="userMap">
+	<resultMap type="com.zb.entity.UserComb" id="userCombMap">
 		<id column="uid" property="uid" />
-		<result column="pid" property="pid" />
-		<result column="rid" property="rid" />
 		<result column="name" property="name" />
 		<result column="password" property="password" />
 		<result column="trueName" property="trueName" />
 		<result column="createTime" property="createTime" />
 		<result column="updateTime" property="updateTime" />
+		<association property="project" javaType="com.zb.entity.Project" column="pid">
+			<id column="pid" property="pid" />
+			<result column="projectName" property="projectName" />
+			<result column="projectAddress" property="projectAddress" />
+			<result column="log" property="log" />
+			<result column="lat" property="lat" />
+			<result column="projectInfo" property="projectInfo" />
+			<result column="projectImg" property="projectImg" />
+			<result column="createTime" property="createTime" />
+		</association>
+		<association property="roleInfo" javaType="com.zb.entity.RoleInfo" column="rid">
+			<id column="rid" property="rid" />
+			<result column="roleName" property="roleName" />
+		</association>
 	</resultMap>
 
 	<insert id="addUser" parameterType="User">
@@ -34,26 +46,32 @@
 		where uid = #{uid}
 	</update>
 
-	<sql id="getUser">
+	<sql id="getUserComb">
 		<if test="name!=null and name != ''">
-			and name=#{name}
+			and u.name=#{name}
 		</if>
 		<if test="pid!=null and pid != ''">
-			and pid=#{pid}
+			and u.pid=#{pid}
 		</if>
 		<if test="uid!=null and uid != ''">
-			and uid=#{uid}
+			and u.uid=#{uid}
 		</if>
 	</sql>
 
 	<select id="searchCount" resultType="Integer">
-		select count(*) from db_user where 1 = 1
-	 	<include refid="getUser"></include>
+		select count(*)
+		from db_user u
+		left join db_project p on u.pid = p.pid
+		left join db_roleinfo r on u.rid = r.rid where 1 = 1
+	 	<include refid="getUserComb"></include>
 	</select>
 
-	<select id="searchUser" resultMap="userMap">
-		select * from db_user where 1 = 1
-		<include refid="getUser"></include>
+	<select id="searchUser" resultMap="userCombMap">
+		select u.*,p.*,r.*
+		from db_user u
+		left join db_project p on u.pid = p.pid
+		left join db_roleinfo r on u.rid = r.rid where 1 = 1
+	 	<include refid="getUserComb"></include>
 		order by uid desc
 	  	limit #{index} ,#{size}
 	</select>

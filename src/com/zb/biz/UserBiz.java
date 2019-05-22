@@ -1,6 +1,7 @@
 package com.zb.biz;
 
 import com.zb.entity.User;
+import com.zb.entity.UserComb;
 import com.zb.util.PageUtil;
 
 public interface UserBiz {
@@ -11,6 +12,6 @@ public interface UserBiz {
 
 	public boolean deleteUser(Integer uid);
 
-	public PageUtil<User> searchUser(String name,Integer pid,PageUtil<User> page,Integer uid);
+	public PageUtil<UserComb> searchUser(String name,Integer pid,PageUtil<UserComb> page,Integer uid);
 
 }
