@@ -32,9 +32,9 @@ public class SensorHisdataBizImpl implements SensorHisdataBiz {
 		return page;
 	}
 
-	public List<SensorHisdata> selectHisData(Integer pid,String deviceDes){
-		List<SensorHisdata> sensorHisdatas = hisdataMapper.selectHisData(pid, deviceDes);
+	public List<SensorHisdataComb> selectHisData(Integer pid,String deviceDes){
+		List<SensorHisdataComb> sensorHisdataCombs = hisdataMapper.selectHisData(pid, deviceDes);
 		
-		return sensorHisdatas;
+		return sensorHisdataCombs;
 	}
 }

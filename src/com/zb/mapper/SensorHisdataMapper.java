@@ -15,5 +15,5 @@ public interface SensorHisdataMapper {
 	
 	public List<SensorHisdataComb> searchHisData(@Param("pid")Integer pid,@Param("index")Integer index,@Param("size")Integer size,@Param("deviceNum")String deviceNum,@Param("beginTime")String beginTime,@Param("endTime")String endTime);
 	
-	public List<SensorHisdata> selectHisData(@Param("pid")Integer pid,@Param("deviceDes")String deviceDes);
+	public List<SensorHisdataComb> selectHisData(@Param("pid")Integer pid,@Param("deviceDes")String deviceDes);
 }

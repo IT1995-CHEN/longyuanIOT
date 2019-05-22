@@ -24,15 +24,7 @@
 			<result column="createTime" property="createTime" />
 		</association>
 	</resultMap>
-
-	<resultMap type="com.zb.entity.SensorHisdata" id="sensorHisdataMap">
-		<id column="hid" property="hid" />
-		<result column="pid" property="pid" />
-		<result column="deviceNum" property="deviceNum" />
-		<result column="hisVal" property="hisVal" />
-		<result column="createTime" property="createTime" />
-	</resultMap>
-
+	
 
 	<insert id="addHisData" parameterType="SensorHisdata">
 		insert into db_sensorhisdata(hid,pid,deviceNum,hisVal,createTime) values(null,#{pid},#{deviceNum},#{hisVal},CURRENT_TIMESTAMP)
@@ -42,16 +34,16 @@
 
 	<sql id="getSensorHisdata">
 		<if test="pid!=null and pid != ''">
-			and pid=#{pid}
+			and p.pid=#{pid}
 		</if>
 		<if test="deviceNum!=null and deviceNum != ''">
-			and deviceNum=#{deviceNum}
+			and d.deviceNum=#{deviceNum}
 		</if>
 		<if test="beginTime!=null and beginTime != ''">
-			and createTime&gt;=#{beginTime}
+			and DATE_FORMAT(h.createTime,'%Y-%m-%d')&gt;=#{beginTime}
 		</if>
 		<if test="endTime!=null and endTime != ''">
-			and createTime&lt;=#{endTime}
+			and DATE_FORMAT(h.createTime,'%Y-%m-%d')&lt;=#{endTime}
 		</if>
 	</sql>
 
@@ -59,7 +51,7 @@
 		select count(*)
 		from db_sensorhisdata h
 		left join db_project p on h.pid = p.pid
-		left join db_deviceinfo d on h.deviceNum = d.deviceNum;
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
 	 	<include refid="getSensorHisdata"></include>
 	</select>
 
@@ -75,15 +67,18 @@
 	
 	<sql id="getHisdata">
 		<if test="pid!=null and pid != ''">
-			and pid=#{pid}
+			and p.pid=#{pid}
 		</if>
 		<if test="deviceDes!=null and deviceDes != ''">
-			and deviceDes=#{deviceDes}
+			and d.deviceDes=#{deviceDes}
 		</if>
 	</sql>
 	
-	<select id="selectHisData" resultMap="sensorHisdataMap">
-		select * from db_sensorhisdata where 1 = 1
+	<select id="selectHisData" resultMap="sensorHisdataCombMap">
+		select h.*,p.*,d.*
+		from db_sensorhisdata h
+		left join db_project p on h.pid = p.pid
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
 		<include refid="getHisdata"></include>
 		order by hid desc
 	</select>

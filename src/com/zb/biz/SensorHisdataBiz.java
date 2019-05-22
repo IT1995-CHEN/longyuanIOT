@@ -12,5 +12,5 @@ public interface SensorHisdataBiz {
 
 	public PageUtil<SensorHisdataComb> searchHisData(Integer pid,PageUtil<SensorHisdataComb> page,String deviceNum,String beginTime,String endTime);
 
-	public List<SensorHisdata> selectHisData(Integer pid,String deviceDes);
+	public List<SensorHisdataComb> selectHisData(Integer pid,String deviceDes);
 }

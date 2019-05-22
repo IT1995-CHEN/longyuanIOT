@@ -49,10 +49,10 @@ public class SensorHisdataC {
 
 	@ResponseBody
 	@RequestMapping("/selectHisData")
-	public List<SensorHisdata> selectSensorHis(Integer pid,String deviceDes){
-		List<SensorHisdata> SensorHisList = sensorHisBiz.selectHisData(pid, deviceDes);
+	public List<SensorHisdataComb> selectSensorHis(Integer pid,String deviceDes){
+		List<SensorHisdataComb> sensorHisdataCombs = sensorHisBiz.selectHisData(pid, deviceDes);
 
-		return SensorHisList;
+		return sensorHisdataCombs;
 	}
 
 }
