@@ -3,7 +3,7 @@ package com.zb.entity;
 public class DeviceComb {
 
 	private Integer did;
-	private Project projcet;
+	private Project project;
 	private String deviceName;
 	private String deviceNum;
 	private String deviceDes;
@@ -15,11 +15,11 @@ public class DeviceComb {
 	public void setDid(Integer did) {
 		this.did = did;
 	}
-	public Project getProjcet() {
-		return projcet;
+	public Project getProject() {
+		return project;
 	}
-	public void setProjcet(Project projcet) {
-		this.projcet = projcet;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 	public String getDeviceName() {
 		return deviceName;

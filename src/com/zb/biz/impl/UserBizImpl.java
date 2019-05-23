@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.UserBiz;
 import com.zb.entity.User;
@@ -16,24 +17,28 @@ public class UserBizImpl implements UserBiz {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Transactional
 	public boolean addUser(User user){
 		boolean flag = userMapper.addUser(user);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean updateUser(User user){
 		boolean flag = userMapper.updateUser(user);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean deleteUser(Integer uid){
 		boolean flag = userMapper.deleteUser(uid);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean login(String name,String password){
 		if(name==null||password==null||"".equals(name)||"".equals(password)){
 			return false;

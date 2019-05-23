@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.WarnBiz;
 import com.zb.entity.Warn;
@@ -16,6 +17,7 @@ public class WarnBizImpl implements WarnBiz {
 	@Autowired
 	private WarnMapper warnMapper;
 
+	@Transactional
 	public boolean addWarn(Warn warn){
 		boolean flag = warnMapper.addWarn(warn);
 		

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.SensorHisdataBiz;
 import com.zb.entity.SensorHisdata;
@@ -16,6 +17,7 @@ public class SensorHisdataBizImpl implements SensorHisdataBiz {
 	@Autowired
 	private SensorHisdataMapper hisdataMapper;
 
+	@Transactional
 	public boolean addHisData(SensorHisdata sensorHis){
 		boolean flag = hisdataMapper.addHisData(sensorHis);
 		

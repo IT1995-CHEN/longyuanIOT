@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.DeviceInfoBiz;
 import com.zb.entity.DeviceComb;
@@ -16,18 +17,21 @@ public class DeviceInfoBizImpl implements DeviceInfoBiz {
 	@Autowired
 	private DeviceInfoMapper deviceInfoMapper;
 
+	@Transactional
 	public boolean addDevice(DeviceInfo device){
 		boolean flag = deviceInfoMapper.addDevice(device);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean updateDevice(DeviceInfo device){
 		boolean flag = deviceInfoMapper.updateDevice(device);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean deleteDevice(Integer did){
 		boolean flag = deviceInfoMapper.deleteDevice(did);
 		

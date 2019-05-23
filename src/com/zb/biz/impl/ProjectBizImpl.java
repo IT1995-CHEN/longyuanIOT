@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.ProjectBiz;
 import com.zb.entity.Project;
@@ -15,18 +16,21 @@ public class ProjectBizImpl implements ProjectBiz {
 	@Autowired
 	private ProjectMapper projectMapper;
 
+	@Transactional
 	public boolean addProject(Project project){
 		boolean flag = projectMapper.addProject(project); 
 		
 		return flag;
 	}
 	
+	@Transactional
 	public boolean updateProject(Project project){
 		boolean flag = projectMapper.updateProject(project); 
 		
 		return flag;
 	}
 	
+	@Transactional
 	public boolean deleteProject(Integer pid){
 		boolean flag = projectMapper.deleteProject(pid); 
 		

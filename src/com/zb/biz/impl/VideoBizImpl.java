@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.VideoBiz;
 import com.zb.entity.Video;
@@ -16,18 +17,21 @@ public class VideoBizImpl implements VideoBiz {
 	@Autowired
 	private VideoMapper videoMapper;
 
+	@Transactional
 	public boolean addVideo(Video video){
 		boolean flag = videoMapper.addVideo(video);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean updateVideo(Video video){
 		boolean flag = videoMapper.updateVideo(video);
 		
 		return flag;
 	}
 
+	@Transactional
 	public boolean deleteVideo(Integer vid){
 		boolean flag = videoMapper.deleteVideo(vid);
 		

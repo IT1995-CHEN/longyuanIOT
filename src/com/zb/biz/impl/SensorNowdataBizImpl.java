@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.SensorNowdataBiz;
 import com.zb.entity.SensorHisdata;
@@ -20,11 +21,13 @@ public class SensorNowdataBizImpl implements SensorNowdataBiz {
 	@Autowired
 	private SensorHisdataMapper hisdataMapper;
 	
+	@Transactional
 	public boolean addNowData(SensorNowdata sensorNow){
 		boolean flag = sensorNowdataMapper.addNowData(sensorNow);
 		return flag;
 	}
 
+	@Transactional
 	public boolean updateNowData(SensorNowdata sensorNow){
 		//在修改 当前数据前，把当前数据保存入历史数据表中
 		SensorNowdata sensorNowdata = sensorNowdataMapper.selectNowDataByNid(sensorNow.getNid());

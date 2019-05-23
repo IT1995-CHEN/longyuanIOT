@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.ControlLogBiz;
 import com.zb.entity.ControlLog;
@@ -15,6 +16,7 @@ public class ControlLogBizImpl implements ControlLogBiz {
 	@Autowired
 	private ControlLogMapper controlLogMapper;
 
+	@Transactional
 	public boolean addControlLog(ControlLog controlLog){
 		boolean flag = controlLogMapper.addControlLog(controlLog);
 		return flag;
