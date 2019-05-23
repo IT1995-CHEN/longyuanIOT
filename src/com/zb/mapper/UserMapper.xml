@@ -25,6 +25,17 @@
 		</association>
 	</resultMap>
 
+	<resultMap type="com.zb.entity.User" id="userMap">
+		<id column="uid" property="uid" />
+		<result column="pid" property="pid" />
+		<result column="rid" property="rid" />
+		<result column="name" property="name" />
+		<result column="password" property="password" />
+		<result column="trueName" property="trueName" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+	</resultMap>
+
 	<insert id="addUser" parameterType="User">
 		insert into db_user(uid,pid,rid,name,password,trueName,createTime,updateTime) values(null,#{pid},#{rid},#{name},#{password},#{trueName},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
 	</insert>
@@ -45,6 +56,10 @@
 		</set>
 		where uid = #{uid}
 	</update>
+
+	<select id="searchUserByName" resultMap="userMap">
+		select * from db_user where name = #{name}
+	</select>
 
 	<sql id="getUserComb">
 		<if test="name!=null and name != ''">

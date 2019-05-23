@@ -14,6 +14,8 @@ public interface UserMapper {
 	public boolean updateUser(User user);
 
 	public boolean deleteUser(@Param("uid")Integer uid);
+	
+	public User searchUserByName(@Param("name")String name);
 
 	public Integer searchCount(@Param("name")String name,@Param("pid")Integer pid,@Param("uid")Integer uid);
 	
