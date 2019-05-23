@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.DeviceInfoMapper">
+
+	<resultMap type="com.zb.entity.DeviceComb" id="deviceCombMap">
+		<id column="did" property="did" />
+		<result column="deviceName" property="deviceName" />
+		<result column="deviceDes" property="deviceDes" />
+		<result column="createTime" property="createTime" />
+		<association property="project"
+			javaType="com.zb.entity.Project" column="pid">
+			<id column="pid" property="pid" />
+			<result column="projectName" property="projectName" />
+			<result column="projectAddress" property="projectAddress" />
+			<result column="log" property="log" />
+			<result column="lat" property="lat" />
+			<result column="projectInfo" property="projectInfo" />
+			<result column="projectImg" property="projectImg" />
+			<result column="createTime" property="createTime" />
+		</association>
+	</resultMap>
+
+	<insert id="addDevice" parameterType="DeviceInfo">
+		insert into
+		db_deviceInfo(did,pid,deviceNum,deviceName,deviceNum,deviceDes,createTime)
+		values(null,#{pid},#{deviceNum},#{deviceName},#{deviceDes},CURRENT_TIMESTAMP)
+	</insert>
+
+	<delete id="deleteDevice" parameterType="Integer">
+		delete from
+		db_deviceInfo where did = #did}
+	</delete>
+
+	<update id="updateDevice" parameterType="Device">
+		update db_deviceInfo
+		<set>
+			<if test="did!=null and did != ''">did=#{did},</if>
+			<if test="deviceName!=null and deviceName != ''">deviceName=#{deviceName},</if>
+			<if test="deviceDes!=null and deviceDes != ''">deviceDes=#{deviceDes},</if>
+			createTime=(SELECT CURRENT_TIMESTAMP)
+		</set>
+		where pid = #{pid}
+	</update>
+
+
+</mapper>

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.UserBiz;
-import com.zb.entity.Project;
 import com.zb.entity.User;
+import com.zb.entity.UserComb;
 import com.zb.util.PageUtil;
 
 @Controller
@@ -61,15 +61,15 @@ public class UserC {
 	
 	@ResponseBody
 	@RequestMapping("/searchUser")
-	public PageUtil<User> searchUser(String name,Integer pid,Integer index,Integer size,Integer uid){
-		PageUtil<Project> page = new PageUtil<Project>();
+	public PageUtil<UserComb> searchUser(String name,Integer pid,Integer index,Integer size,Integer uid){
+		PageUtil<UserComb> page = new PageUtil<UserComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
 		}
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<User> pageUtil = userBiz.searchUser(name, pid, index, size, uid);
+		PageUtil<UserComb> pageUtil = userBiz.searchUser(name, pid, page, uid);
 		return pageUtil;
 	}
 

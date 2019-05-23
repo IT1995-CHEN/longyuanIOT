@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.SensorNowdataMapper">
+
+	<resultMap type="com.zb.entity.SensorNowdataComb" id="sensorNowdataCombMap">
+		<id column="nid" property="nid" />
+		<result column="val" property="val" />
+		<result column="updateTime" property="updateTime" />
+		<association property="project" javaType="com.zb.entity.Project" column="pid">
+			<id column="pid" property="pid" />
+			<result column="projectName" property="projectName" />
+			<result column="projectAddress" property="projectAddress" />
+			<result column="log" property="log" />
+			<result column="lat" property="lat" />
+			<result column="projectInfo" property="projectInfo" />
+			<result column="projectImg" property="projectImg" />
+			<result column="createTime" property="createTime" />
+		</association>
+		<association property="deviceInfo" javaType="com.zb.entity.DeviceInfo" column="deviceNum">
+			<id column="did" property="did" />
+			<result column="deviceName" property="deviceName" />
+			<result column="deviceNum" property="deviceNum" />
+			<result column="deviceDes" property="deviceDes" />
+			<result column="createTime" property="createTime" />
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.zb.entity.SensorNowdata" id="sensorNowdataMap">
+		<id column="nid" property="nid" />
+		<result column="pid" property="pid" />
+		<result column="deviceNum" property="deviceNum" />
+		<result column="val" property="val" />
+		<result column="updateTime" property="updateTime" />
+	</resultMap>	
+	
+
+	<insert id="addNowData" parameterType="SensorNowdata">
+		insert into db_sensornowdata(nid,pid,deviceNum,val,updateTime) values(null,#{pid},#{deviceNum},#{val},CURRENT_TIMESTAMP)
+	</insert>
+	
+	
+	<update id="updateNowData" parameterType="SensorNowdata">
+		update db_sensornowdata
+		<set>
+			<if test="pid!=null and pid != ''">pid=#{pid},</if>
+			<if test="deviceNum!=null and deviceNum != ''">deviceNum=#{deviceNum},</if>
+			<if test="val!=null and val != ''">val=#{val},</if>
+			updateTime=(SELECT CURRENT_TIMESTAMP)
+		</set>
+		where nid = #{nid}
+	</update>
+
+	
+	<sql id="getNowdata">
+		<if test="deviceNum!=null and deviceNum != ''">
+			and d.deviceNum=#{deviceNum}
+		</if>
+		<if test="pid!=null and pid != ''">
+			and p.pid=#{pid}
+		</if>
+		
+	</sql>
+	
+	<select id="selectNowDataByNid" resultMap="sensorNowdataMap">
+		select * from db_sensornowdata where nid = #{nid}		
+	</select>
+	
+	<select id="selectNowData" resultMap="sensorNowdataCombMap">
+		select n.*,p.*,d.*
+		from db_sensornowdata n
+		left join db_project p on n.pid = p.pid
+		left join db_deviceinfo d on n.deviceNum = d.deviceNum where 1 = 1
+		<include refid="getNowdata"></include>
+		order by nid desc
+	</select>
+</mapper>

@@ -1,6 +1,7 @@
 package com.zb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.SensorNowdataBiz;
 import com.zb.entity.SensorNowdata;
-import com.zb.util.PageUtil;
+import com.zb.entity.SensorNowdataComb;
 
 @Controller
 public class SensorNowdataC {
@@ -47,11 +48,9 @@ public class SensorNowdataC {
 	
 
 	@ResponseBody
-	@RequestMapping("/searchNowData")
-	public PageUtil<SensorNowdata> searchNowData(String deviceNum,Integer pid){
-		PageUtil<SensorNowdata> page = new PageUtil<SensorNowdata>();
-	
-		PageUtil<SensorNowdata> pageUtil = sensorNowBiz.searchNowData(deviceNum,pid);
-		return pageUtil;
+	@RequestMapping("/selectNowData")
+	public List<SensorNowdataComb> selectNowData(String deviceNum,Integer pid){
+		List<SensorNowdataComb> sensorNowdataCombs = sensorNowBiz.selectNowData(deviceNum, pid);
+		return sensorNowdataCombs;
 	}
 }

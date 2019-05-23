@@ -11,6 +11,8 @@ public interface SensorHisdataMapper {
 
 	public boolean addHisData(SensorHisdata sensorHis);
 
+	public boolean deleteDevice(@Param("did")Integer did);
+	
 	public Integer searchCount(@Param("pid")Integer pid,@Param("deviceNum")String deviceNum,@Param("beginTime")String beginTime,@Param("endTime")String endTime);
 	
 	public List<SensorHisdataComb> searchHisData(@Param("pid")Integer pid,@Param("index")Integer index,@Param("size")Integer size,@Param("deviceNum")String deviceNum,@Param("beginTime")String beginTime,@Param("endTime")String endTime);

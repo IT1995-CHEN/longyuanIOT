@@ -1,7 +1,9 @@
 package com.zb.biz;
 
+import java.util.List;
+
 import com.zb.entity.SensorNowdata;
-import com.zb.util.PageUtil;
+import com.zb.entity.SensorNowdataComb;
 
 public interface SensorNowdataBiz {
 
@@ -9,6 +11,6 @@ public interface SensorNowdataBiz {
 
 	public boolean updateNowData(SensorNowdata sensorNow);
 
-	public PageUtil<SensorNowdata> searchNowData(String deviceNum,Integer pid);
+	public List<SensorNowdataComb> selectNowData(String deviceNum,Integer pid);
 
 }
