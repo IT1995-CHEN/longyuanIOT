@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.ControlMapper">
+
+	<resultMap type="com.zb.entity.Control" id="controlMap">
+		<id column="cid" property="cid" />
+		<result column="pid" property="pid" />
+		<result column="deviceNum" property="deviceNum" />
+		<result column="operationState" property="operationState" />
+		<result column="updateTime" property="updateTime" />
+	</resultMap>
+
+	<insert id="addControl" parameterType="Control">
+		insert into db_control(cid,pid,deviceNum,operationState,updateTime) values(null,#{pid},#{deviceNum},#{operationState},CURRENT_TIMESTAMP)
+	</insert>
+	
+	<update id="updateControl" parameterType="Control">
+		update db_control
+		<set>
+			<if test="pid!=null and pid != ''">pid=#{pid},</if>
+			<if test="deviceNum!=null and deviceNum != ''">deviceNum=#{deviceNum},</if>
+			<if test="operationState!=null and operationState != ''">operationState=#{operationState},</if>
+			updateTime=(SELECT CURRENT_TIMESTAMP)
+		</set>
+		where cid = #{cid}
+	</update>
+
+	
+	<delete id="deleteControlCid" parameterType="Integer">
+		delete from db_control where cid = #{cid}
+	</delete>
+	
+	<delete id="deleteControlDeviceNum" parameterType="String">
+		delete from db_control where deviceNum = #{deviceNum}
+	</delete>
+	
+	<select id="selectControl" resultMap="controlMap">
+		select * from db_control order by cid desc
+	</select>
+</mapper>
