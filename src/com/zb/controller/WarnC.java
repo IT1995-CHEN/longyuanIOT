@@ -1,3 +1,4 @@
+
 package com.zb.controller;
 
 import java.util.HashMap;
@@ -32,17 +33,17 @@ public class WarnC {
 
 	}
 
-	@ResponseBody
-	@RequestMapping("/searchWarn")
-	public PageUtil<Warn> searchWarn(Integer index,Integer size,Integer pid,String deviceNum,String warnInfo){
-		PageUtil<Warn> page = new PageUtil<Warn>();
-		if(index!=null&&!index.equals("")) {
-			page.setIndex(index);
-		}
-		if(size!=null&&!size.equals("")) {
-			page.setSize(size);
-		}
-		PageUtil<Warn> pageUtil = warnBiz.searchWarn(index, size,pid,deviceNum,warnInfo);
-		return pageUtil;
-	}
+//	@ResponseBody
+//	@RequestMapping("/searchWarn")
+//	public PageUtil<Warn> searchWarn(Integer index,Integer size,Integer pid,String deviceNum,String warnInfo){
+//		PageUtil<Warn> page = new PageUtil<Warn>();
+//		if(index!=null&&!index.equals("")) {
+//			page.setIndex(index);
+//		}
+//		if(size!=null&&!size.equals("")) {
+//			page.setSize(size);
+//		}
+//		PageUtil<Warn> pageUtil = warnBiz.searchWarn(index, size,pid,deviceNum,warnInfo);
+//		return pageUtil;
+//	}
 }
