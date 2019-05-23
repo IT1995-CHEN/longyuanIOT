@@ -1,6 +1,7 @@
 package com.zb.biz;
 
 import com.zb.entity.Video;
+import com.zb.entity.VideoComb;
 import com.zb.util.PageUtil;
 
 public interface VideoBiz {
@@ -11,7 +12,9 @@ public interface VideoBiz {
 	public boolean updateVideo(Video video);
 
 	public boolean deleteVideo(Integer vid);
+	
+	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,Integer vid);
 
-	public PageUtil<Video> searchVideo(String monitorName,Integer vid,Integer pid,Integer index,Integer size);
+	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,Integer vid,PageUtil<VideoComb> page);
 
 }

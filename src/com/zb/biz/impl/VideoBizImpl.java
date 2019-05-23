@@ -1,28 +1,52 @@
 package com.zb.biz.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zb.biz.VideoBiz;
 import com.zb.entity.Video;
+import com.zb.entity.VideoComb;
+import com.zb.mapper.VideoMapper;
 import com.zb.util.PageUtil;
 
 @Service("video")
 public class VideoBizImpl implements VideoBiz {
+	@Autowired
+	private VideoMapper videoMapper;
 
 	public boolean addVideo(Video video){
-		return false;
+		boolean flag = videoMapper.addVideo(video);
+		
+		return flag;
 	}
 
 	public boolean updateVideo(Video video){
-		return false;
+		boolean flag = videoMapper.updateVideo(video);
+		
+		return flag;
 	}
 
 	public boolean deleteVideo(Integer vid){
-		return false;
+		boolean flag = videoMapper.deleteVideo(vid);
+		
+		return flag;
 	}
 
-	public PageUtil<Video> searchVideo(String monitorName,Integer vid,Integer pid,Integer index,Integer size){
-		return null;
+	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,Integer vid) {
+		Integer cnt = videoMapper.searchCount(pid, monitorName, monitorAdd, vid);
+		return cnt;
+	}
+
+	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,Integer vid,PageUtil<VideoComb> page){
+		List<VideoComb> videoCombs = videoMapper.searchVideo(pid,monitorName,monitorAdd,vid,(page.getIndex() - 1) * page.getSize(), page.getSize());
+		page.setPage(videoCombs);
+		
+		int count = videoMapper.searchCount(pid, monitorName, monitorAdd, vid);
+		page.setCount(count);
+		
+		return page;
 	}
 
 }

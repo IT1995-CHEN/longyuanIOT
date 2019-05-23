@@ -5,10 +5,10 @@
 	<resultMap type="com.zb.entity.DeviceComb" id="deviceCombMap">
 		<id column="did" property="did" />
 		<result column="deviceName" property="deviceName" />
+		<result column="deviceNum" property="deviceNum" />
 		<result column="deviceDes" property="deviceDes" />
 		<result column="createTime" property="createTime" />
-		<association property="project"
-			javaType="com.zb.entity.Project" column="pid">
+		<association property="project" javaType="com.zb.entity.Project" column="pid">
 			<id column="pid" property="pid" />
 			<result column="projectName" property="projectName" />
 			<result column="projectAddress" property="projectAddress" />
@@ -21,26 +21,53 @@
 	</resultMap>
 
 	<insert id="addDevice" parameterType="DeviceInfo">
-		insert into
-		db_deviceInfo(did,pid,deviceNum,deviceName,deviceNum,deviceDes,createTime)
-		values(null,#{pid},#{deviceNum},#{deviceName},#{deviceDes},CURRENT_TIMESTAMP)
+		insert into db_deviceInfo(did,pid,deviceName,deviceNum,deviceDes,createTime)
+		values(null,#{pid},#{deviceName},#{deviceNum},#{deviceDes},CURRENT_TIMESTAMP)
 	</insert>
 
 	<delete id="deleteDevice" parameterType="Integer">
-		delete from
-		db_deviceInfo where did = #did}
+		delete from db_deviceInfo where did = #{did}
 	</delete>
 
-	<update id="updateDevice" parameterType="Device">
+	<update id="updateDevice" parameterType="DeviceInfo">
 		update db_deviceInfo
 		<set>
-			<if test="did!=null and did != ''">did=#{did},</if>
+			<if test="pid!=null and pid != ''">pid=#{pid},</if>
 			<if test="deviceName!=null and deviceName != ''">deviceName=#{deviceName},</if>
+			<if test="deviceNum!=null and deviceNum != ''">deviceNum=#{deviceNum},</if>
 			<if test="deviceDes!=null and deviceDes != ''">deviceDes=#{deviceDes},</if>
 			createTime=(SELECT CURRENT_TIMESTAMP)
 		</set>
-		where pid = #{pid}
+		where did = #{did}
 	</update>
 
+	<sql id="getDeviceInfo">
+		<if test="projectName!=null and projectName != ''">
+			and p.projectName=#{projectName}
+		</if>
+		<if test="deviceName!=null and deviceName != ''">
+			and d.deviceName=#{deviceName}
+		</if>
+		<if test="deviceNum!=null and deviceNum != ''">
+			and d.deviceNum=#{deviceNum}
+		</if>
+
+	</sql>
+
+	<select id="searchCount" resultType="Integer">
+		select count(*)
+		from db_deviceinfo d
+		left join db_project p on d.pid = p.pid where 1 = 1
+	 	<include refid="getDeviceInfo"></include>
+	</select>
+
+	<select id="searchDevice" resultMap="deviceCombMap">
+		select d.*,p.*
+		from db_deviceinfo d
+		left join db_project p on d.pid = p.pid where 1 = 1
+	 	<include refid="getDeviceInfo"></include>
+		order by did desc
+	  	limit #{index} ,#{size}
+	</select>
 
 </mapper>

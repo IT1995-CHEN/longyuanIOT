@@ -5,8 +5,10 @@ public class DeviceComb {
 	private Integer did;
 	private Project projcet;
 	private String deviceName;
+	private String deviceNum;
 	private String deviceDes;
 	private String createTime;
+	
 	public Integer getDid() {
 		return did;
 	}
@@ -25,6 +27,12 @@ public class DeviceComb {
 	public void setDeviceName(String deviceName) {
 		this.deviceName = deviceName;
 	}
+	public String getDeviceNum() {
+		return deviceNum;
+	}
+	public void setDeviceNum(String deviceNum) {
+		this.deviceNum = deviceNum;
+	}
 	public String getDeviceDes() {
 		return deviceDes;
 	}
@@ -37,6 +45,6 @@ public class DeviceComb {
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
-
-
+	
+	
 }

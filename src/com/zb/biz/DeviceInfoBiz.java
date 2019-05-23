@@ -1,5 +1,6 @@
 package com.zb.biz;
 
+import com.zb.entity.DeviceComb;
 import com.zb.entity.DeviceInfo;
 import com.zb.util.PageUtil;
 
@@ -11,5 +12,7 @@ public interface DeviceInfoBiz {
 
 	public boolean deleteDevice(Integer did);
 
-	public PageUtil<DeviceInfo> searchDevice(String projectName,String deviceName,String deviceNum,Integer index,Integer size);
+	public Integer searchCount(String projectName,String deviceName,String deviceNum);
+	
+	public PageUtil<DeviceComb> searchDevice(String projectName,String deviceName,String deviceNum,PageUtil<DeviceComb> page);
 }

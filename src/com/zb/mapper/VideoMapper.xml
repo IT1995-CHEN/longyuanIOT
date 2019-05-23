@@ -7,8 +7,7 @@
 		<result column="monitorName" property="monitorName" />
 		<result column="monitorAdd" property="monitorAdd" />
 		<result column="createTime" property="createTime" />
-		<association property="project"
-			javaType="com.zb.entity.Project" column="pid">
+		<association property="project" javaType="com.zb.entity.Project" column="pid">
 			<id column="pid" property="pid" />
 			<result column="projectName" property="projectName" />
 			<result column="projectAddress" property="projectAddress" />
@@ -21,26 +20,56 @@
 	</resultMap>
 
 	<insert id="addVideo" parameterType="Video">
-		insert into
-		db_video(vid,pid,monitorName,monitorAdd,createTime)
-		values(null,#{pid},#{monitorName},#{monitorAddName},CURRENT_TIMESTAMP)
+		insert into db_video(vid,pid,monitorName,monitorAdd,createTime)
+		values(null,#{pid},#{monitorName},#{monitorAdd},CURRENT_TIMESTAMP)
 	</insert>
 
 	<delete id="deleteVideo" parameterType="Integer">
-		delete from
-		db_video where vid = #vid}
+		delete from db_video where vid = #{vid}
 	</delete>
 
 	<update id="updateVideo" parameterType="Video">
 		update db_video
 		<set>
-			<if test="vid!=null and vid != ''">vid=#{vid},</if>
+			<if test="pid!=null and pid != ''">pid=#{pid},</if>
 			<if test="monitorName!=null and monitorName != ''">monitorName=#{monitorName},</if>
 			<if test="monitorAdd!=null and monitorAdd != ''">monitorAdd=#{monitorAdd},</if>
 			createTime=(SELECT CURRENT_TIMESTAMP)
 		</set>
-		where pid = #{pid}
+		where vid = #{vid}
 	</update>
+
+	<sql id="getVideo">
+		<if test="pid!=null and pid != ''">
+			and p.pid=#{pid}
+		</if>
+		<if test="monitorName!=null and monitorName != ''">
+			and v.monitorName=#{monitorName}
+		</if>
+		<if test="monitorAdd!=null and monitorAdd != ''">
+			and v.monitorAdd=#{monitorAdd}
+		</if>
+		<if test="vid!=null and vid != ''">
+			and v.vid=#{vid}
+		</if>
+
+	</sql>
+
+	<select id="searchCount" resultType="Integer">
+		select count(*)
+		from db_video v
+		left join db_project p on v.pid = p.pid where 1 = 1
+	 	<include refid="getVideo"></include>
+	</select>
+
+	<select id="searchVideo" resultMap="videoCombMap">
+		select v.*,p.*
+		from db_video v
+		left join db_project p on v.pid = p.pid where 1 = 1
+	 	<include refid="getVideo"></include>
+		order by vid desc
+	  	limit #{index} ,#{size}
+	</select>
 
 
 </mapper>

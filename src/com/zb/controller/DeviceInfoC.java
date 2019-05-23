@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.DeviceInfoBiz;
+import com.zb.entity.DeviceComb;
 import com.zb.entity.DeviceInfo;
 import com.zb.util.PageUtil;
 
@@ -59,16 +60,24 @@ public class DeviceInfoC {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/countDevice")
+	public Integer searchCount(String projectName,String deviceName,String deviceNum){
+		Integer cnt = deviceBiz.searchCount(projectName, deviceName, deviceNum);
+		return cnt;
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping("/searchDevice")
-	public PageUtil<DeviceInfo> searchDevice(String projectName,String deviceName,String deviceNum,Integer index,Integer size){
-		PageUtil<DeviceInfo> page = new PageUtil<DeviceInfo>();
+	public PageUtil<DeviceComb> searchDevice(String projectName,String deviceName,String deviceNum,Integer index,Integer size){
+		PageUtil<DeviceComb> page = new PageUtil<DeviceComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
 		}
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<DeviceInfo> pageUtil = deviceBiz.searchDevice(projectName, deviceName, deviceNum, index, size);
+		PageUtil<DeviceComb> pageUtil = deviceBiz.searchDevice(projectName, deviceName, deviceNum,page);
 		return pageUtil;
 	}
 	

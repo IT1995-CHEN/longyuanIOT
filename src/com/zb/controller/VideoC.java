@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.VideoBiz;
 import com.zb.entity.Video;
+import com.zb.entity.VideoComb;
 import com.zb.util.PageUtil;
 
 @Controller
@@ -60,16 +61,23 @@ public class VideoC {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/countVideo")
+	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,Integer vid) {
+		Integer cnt = videoBiz.searchCount(pid, monitorName, monitorAdd, vid);
+		return cnt;
+	}
+	
+	@ResponseBody
 	@RequestMapping("/searchVideo")
-	public PageUtil<Video> searchVideo(String monitorName,Integer vid,Integer pid,Integer index,Integer size){
-		PageUtil<Video> page = new PageUtil<Video>();
+	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,Integer vid,Integer index,Integer size){
+		PageUtil<VideoComb> page = new PageUtil<VideoComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
 		}
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<Video> pageUtil = videoBiz.searchVideo(monitorName, vid,pid,index, size);
+		PageUtil<VideoComb> pageUtil = videoBiz.searchVideo(pid, monitorName, monitorAdd, vid, page);
 		return pageUtil;
 	}
 	
