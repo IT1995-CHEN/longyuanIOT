@@ -16,7 +16,6 @@ import com.zb.util.PageUtil;
 @Controller
 public class VideoC {
 
-	
 	@Autowired
 	private VideoBiz videoBiz;
 	
