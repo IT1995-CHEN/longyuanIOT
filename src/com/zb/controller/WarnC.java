@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.WarnBiz;
 import com.zb.entity.Warn;
+import com.zb.entity.WarnComb;
 import com.zb.util.PageUtil;
 
 @Controller
@@ -18,6 +19,7 @@ public class WarnC {
 	@Autowired
 	private WarnBiz warnBiz;
 
+	@ResponseBody
 	@RequestMapping("/addWarn")
 	public Map<String,String> addWarn(Warn warn) {
 		boolean f = warnBiz.addWarn(warn);
@@ -33,15 +35,15 @@ public class WarnC {
 
 	@ResponseBody
 	@RequestMapping("/searchWarn")
-	public PageUtil<Warn> searchWarn(Integer index,Integer size,Integer pid,String deviceNum,String warnInfo){
-		PageUtil<Warn> page = new PageUtil<Warn>();
+	public PageUtil<WarnComb> searchWarn(Integer index,Integer size,Integer pid,String deviceNum,String warnInfo){
+		PageUtil<WarnComb> page = new PageUtil<WarnComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
 		}
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<Warn> pageUtil = warnBiz.searchWarn(index, size,pid,deviceNum,warnInfo);
+		PageUtil<WarnComb> pageUtil = warnBiz.searchWarn(deviceNum, pid, page, warnInfo);
 		return pageUtil;
 	}
 }
