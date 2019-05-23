@@ -60,6 +60,29 @@ public class UserC {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/login")
+	public Map<String,String> login(String name,String password) {
+		boolean f = userBiz.login(name, password);
+		Map<String,String> map = new HashMap<String,String>();
+		if(f==true) {
+			map.put("yes", "登录成功");
+		}else {
+			map.put("no", "登录失败");
+		}
+		return map;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/countUser")
+	public Integer searchCount(String name,Integer pid,Integer uid){
+		Integer cnt = userBiz.searchCount(name, pid, uid);
+		
+		return cnt;
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping("/searchUser")
 	public PageUtil<UserComb> searchUser(String name,Integer pid,Integer index,Integer size,Integer uid){
 		PageUtil<UserComb> page = new PageUtil<UserComb>();

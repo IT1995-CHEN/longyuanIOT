@@ -33,6 +33,11 @@ public class ProjectBizImpl implements ProjectBiz {
 		return flag;
 	}
 	
+	public Integer searchCount(String projectName){
+		Integer  cnt = projectMapper.searchCount(projectName);
+		return cnt;
+	}
+	
 	public PageUtil<Project> searchProject(String projectName,PageUtil<Project> page){
 		List<Project> projects = projectMapper.searchProject(projectName,(page.getIndex() - 1) * page.getSize(), page.getSize());
 		page.setPage(projects);

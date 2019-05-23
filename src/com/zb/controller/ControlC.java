@@ -1,6 +1,7 @@
 package com.zb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,57 @@ public class ControlC {
 		return map;
 		
 	}
+	
+	@ResponseBody
+	@RequestMapping("/updateControl")
+	public Map<String,String> updateControl(Control control) {
+		boolean f = controlBiz.updateControl(control);
+		Map<String,String> map = new HashMap<String, String>();
+		if(f==true) {
+			map.put("yes","修改成功!");
+		}else {
+			map.put("no","修改失败!");
+		}
+		return map;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/deleteControlCid")
+	public Map<String,String> deleteControlCid(Integer cid) {
+		boolean f = controlBiz.deleteControlCid(cid);
+		Map<String,String> map = new HashMap<String, String>();
+		if(f==true) {
+			map.put("yes","删除成功!");
+		}else {
+			map.put("no","删除失败!");
+		}
+		return map;
+		
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/deleteControlDeviceNum")
+	public Map<String,String> deleteControlDeviceNum(String deviceNum) {
+		boolean f = controlBiz.deleteControlDeviceNum(deviceNum);
+		Map<String,String> map = new HashMap<String, String>();
+		if(f==true) {
+			map.put("yes","删除成功!");
+		}else {
+			map.put("no","删除失败!");
+		}
+		return map;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/selectControl")
+	public List<Control> selectControl(String deviceNum) {
+		List<Control> controls = controlBiz.selectControl(deviceNum);
+		
+		return controls;
+		
+	}
 }
+

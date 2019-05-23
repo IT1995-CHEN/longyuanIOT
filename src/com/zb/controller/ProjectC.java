@@ -60,6 +60,13 @@ public class ProjectC {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/countProject")
+	public Integer searchCount(String projectName){
+		Integer  cnt = projectBiz.searchCount(projectName);
+		return cnt;
+	}
+	
+	@ResponseBody
 	@RequestMapping("/searchProject")
 	public PageUtil<Project> searchProject(String projectName,Integer index,Integer size){
 		PageUtil<Project> page = new PageUtil<Project>();

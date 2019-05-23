@@ -12,6 +12,10 @@ public interface UserBiz {
 
 	public boolean deleteUser(Integer uid);
 
+	public boolean login(String name,String password);
+	
+	public Integer searchCount(String name,Integer pid,Integer uid);
+	
 	public PageUtil<UserComb> searchUser(String name,Integer pid,PageUtil<UserComb> page,Integer uid);
 
 }

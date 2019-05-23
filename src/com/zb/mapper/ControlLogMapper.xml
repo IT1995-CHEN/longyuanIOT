@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.ControlLogMapper">
+
+	<resultMap type="com.zb.entity.ControlLogComb" id="controlLogMap">
+		<id column="lid" property="lid" />
+		<result column="hisstate" property="hisstate" />
+		<result column="hisinfo" property="hisinfo" />
+		<result column="taskNum" property="taskNum" />
+		<result column="operationOrder" property="operationOrder" />
+		<result column="person" property="person" />
+		<result column="kind" property="kind" />
+		<result column="qualConfig" property="qualConfig" />
+		<result column="minVal" property="minVal" />
+		<result column="maxVal" property="maxVal" />
+		<result column="beginTime" property="beginTime" />
+		<result column="endTime" property="endTime" />
+		<result column="duration" property="duration" />
+		<result column="createtime" property="createtime" />
+		<association property="deviceInfo" javaType="com.zb.entity.DeviceInfo" column="deviceNum">
+			<id column="did" property="did" />
+			<result column="pid" property="pid" />
+			<result column="deviceName" property="deviceName" />
+			<result column="deviceNum" property="deviceNum" />
+			<result column="deviceDes" property="deviceDes" />
+			<result column="createTime" property="createTime" />
+		</association>
+	</resultMap>
+	
+	
+
+	<insert id="addControlLog" parameterType="ControlLog">
+		insert into db_controllog(lid,deviceNum,hisstate,hisinfo,taskNum,operationOrder,person,kind,qualConfig,minVal,maxVal,beginTime,endTime,duration,createtime) 
+		values(null,#{deviceNum},#{hisstate},#{hisinfo},#{taskNum},#{operationOrder},#{person},#{kind},#{qualConfig},#{minVal},#{maxVal},#{beginTime},#{endTime},#{duration},CURRENT_TIMESTAMP)
+	</insert>
+
+	
+	<sql id="getControlLog">
+		<if test="deviceNum!=null and deviceNum != ''">
+			and d.deviceNum=#{deviceNum}
+		</if>
+		<if test="hisstate!=null and hisstate != ''">
+			and l.hisstate=#{hisstate}
+		</if>
+		<if test="hisinfo!=null and hisinfo != ''">
+			and l.hisinfo=#{hisinfo}
+		</if>
+		<if test="taskNum!=null and taskNum != ''">
+			and l.taskNum=#{taskNum}
+		</if>
+		<if test="operationOrder!=null and operationOrder != ''">
+			and l.operationOrder=#{operationOrder}
+		</if>
+		<if test="person!=null and person != ''">
+			and l.person=#{person}
+		</if>
+		<if test="kind!=null and kind != ''">
+			and l.kind=#{kind}
+		</if>
+		<if test="qualConfig!=null and qualConfig != ''">
+			and l.qualConfig=#{qualConfig}
+		</if>
+		<if test="minVal!=null and minVal != ''">
+			and l.minVal=#{minVal}
+		</if>
+		<if test="maxVal!=null and maxVal != ''">
+			and l.maxVal=#{maxVal}
+		</if>
+		<if test="beginTime!=null and beginTime != ''">
+			and l.beginTime=#{beginTime}
+		</if>
+		<if test="endTime!=null and endTime != ''">
+			and l.endTime=#{endTime}
+		</if>
+		<if test="duration!=null and duration != ''">
+			and l.duration=#{duration}
+		</if>	
+	</sql>
+	
+	<select id="searchCount" resultType="Integer">
+		select count(*) from db_controllog l
+		left join db_deviceinfo d on l.deviceNum = d.deviceNum where 1 = 1
+		<include refid="getControlLog"></include>
+	</select>
+	
+	<select id="searchControlLog" resultMap="controlLogMap">
+		select l.*,d.* from db_controllog l
+		left join db_deviceinfo d on l.deviceNum = d.deviceNum where 1 = 1
+		<include refid="getControlLog"></include>
+		order by lid desc
+		limit #{index} ,#{size}
+	</select>
+</mapper>
