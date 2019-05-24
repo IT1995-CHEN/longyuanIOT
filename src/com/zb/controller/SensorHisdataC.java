@@ -28,9 +28,9 @@ public class SensorHisdataC {
 		boolean f = sensorHisBiz.addHisData(sensorHis);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","添加成功!");
+			map.put("ok","添加成功!");
 		}else {
-			map.put("no","添加失败!");
+			map.put("ok","添加失败!");
 		}
 		return map;
 	}

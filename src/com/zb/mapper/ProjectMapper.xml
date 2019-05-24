@@ -54,6 +54,6 @@
 	</select>
 	
 	<select id="selectProject" resultMap="projectMap">
-		select pid,projectName from db_project order by pid desc
+		select pid,projectName,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%s') as createTime from db_project order by pid desc
 	</select>
 </mapper>

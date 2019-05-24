@@ -24,9 +24,9 @@ public class ControlC {
 		boolean f = controlBiz.addControl(control);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","添加成功!");
+			map.put("ok","添加成功!");
 		}else {
-			map.put("no","添加失败!");
+			map.put("ok","添加失败!");
 		}
 		return map;
 		
@@ -38,9 +38,9 @@ public class ControlC {
 		boolean f = controlBiz.updateControl(control);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","修改成功!");
+			map.put("ok","修改成功!");
 		}else {
-			map.put("no","修改失败!");
+			map.put("ok","修改失败!");
 		}
 		return map;
 		
@@ -52,9 +52,9 @@ public class ControlC {
 		boolean f = controlBiz.deleteControlCid(cid);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","删除成功!");
+			map.put("ok","删除成功!");
 		}else {
-			map.put("no","删除失败!");
+			map.put("ok","删除失败!");
 		}
 		return map;
 		
@@ -67,9 +67,9 @@ public class ControlC {
 		boolean f = controlBiz.deleteControlDeviceNum(deviceNum);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","删除成功!");
+			map.put("ok","删除成功!");
 		}else {
-			map.put("no","删除失败!");
+			map.put("ok","删除失败!");
 		}
 		return map;
 		

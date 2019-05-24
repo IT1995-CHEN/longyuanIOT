@@ -25,9 +25,9 @@ public class SensorNowdataC {
 		boolean f = sensorNowBiz.addNowData(sensorNow);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","添加成功!");
+			map.put("ok","添加成功!");
 		}else {
-			map.put("no","添加失败!");
+			map.put("ok","添加失败!");
 		}
 		return map;
 		
@@ -39,9 +39,9 @@ public class SensorNowdataC {
 		boolean f = sensorNowBiz.updateNowData(sensorNow);
 		Map<String,String> map = new HashMap<String, String>();
 		if(f==true) {
-			map.put("yes","修改成功!");
+			map.put("ok","修改成功!");
 		}else {
-			map.put("no","修改失败!");
+			map.put("ok","修改失败!");
 		}
 		return map;
 	}
