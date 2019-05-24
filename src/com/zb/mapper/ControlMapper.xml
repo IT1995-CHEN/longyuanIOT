@@ -35,6 +35,7 @@
 	</delete>
 	
 	<select id="selectControl" resultMap="controlMap">
-		select * from db_control order by cid desc
+		select cid,pid,deviceNum,operationState,DATE_FORMAT(updateTime,'%Y-%m-%d %H:%i:%s') as updateTime 
+		from db_control order by cid desc
 	</select>
 </mapper>

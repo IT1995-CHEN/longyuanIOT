@@ -5,7 +5,7 @@
 	<resultMap type="com.zb.entity.WarnComb" id="warnCombMap">
 		<id column="wid" property="wid" />
 		<result column="warnInfo" property="warnInfo" />
-		<result column="createTime" property="createTime" />
+		<result column="wcreateTime" property="createTime" />
 		<association property="project" javaType="com.zb.entity.Project" column="pid">
 			<id column="pid" property="pid" />
 			<result column="projectName" property="projectName" />
@@ -14,14 +14,14 @@
 			<result column="lat" property="lat" />
 			<result column="projectInfo" property="projectInfo" />
 			<result column="projectImg" property="projectImg" />
-			<result column="createTime" property="createTime" />
+			<result column="pcreateTime" property="createTime" />
 		</association>
 		<association property="deviceInfo" javaType="com.zb.entity.DeviceInfo" column="deviceNum">
 			<id column="did" property="did" />
 			<result column="deviceName" property="deviceName" />
 			<result column="deviceNum" property="deviceNum" />
 			<result column="deviceDes" property="deviceDes" />
-			<result column="createTime" property="createTime" />
+			<result column="dcreateTime" property="createTime" />
 		</association>
 	</resultMap>
 	
@@ -53,7 +53,9 @@
 	</select>
 	
 	<select id="searchWarn" resultMap="warnCombMap">
-		select w.*,p.*,d.*
+		select w.wid,w.pid,w.deviceNum,w.warnInfo,DATE_FORMAT(w.createTime,'%Y-%m-%d %H:%i:%s') as wcreateTime,
+		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+		d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
 		from db_warn w
 		left join db_project p on w.pid = p.pid
 		left join db_deviceinfo d on w.deviceNum = d.deviceNum where 1 = 1

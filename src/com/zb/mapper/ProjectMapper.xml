@@ -47,7 +47,7 @@
 	</select>
 
 	<select id="searchProject" resultMap="projectMap">
-		select * from db_project where 1 = 1
+		select pid,projectName,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%s') as createTime from db_project where 1 = 1
 		<include refid="getProject"></include>
 		order by pid desc
 	  	limit #{index} ,#{size}

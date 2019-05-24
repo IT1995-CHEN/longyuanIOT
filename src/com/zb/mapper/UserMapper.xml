@@ -7,8 +7,8 @@
 		<result column="name" property="name" />
 		<result column="password" property="password" />
 		<result column="trueName" property="trueName" />
-		<result column="createTime" property="createTime" />
-		<result column="updateTime" property="updateTime" />
+		<result column="ucreateTime" property="createTime" />
+		<result column="uupdateTime" property="updateTime" />
 		<association property="project" javaType="com.zb.entity.Project" column="pid">
 			<id column="pid" property="pid" />
 			<result column="projectName" property="projectName" />
@@ -17,7 +17,7 @@
 			<result column="lat" property="lat" />
 			<result column="projectInfo" property="projectInfo" />
 			<result column="projectImg" property="projectImg" />
-			<result column="createTime" property="createTime" />
+			<result column="pcreateTime" property="createTime" />
 		</association>
 		<association property="roleInfo" javaType="com.zb.entity.RoleInfo" column="rid">
 			<id column="rid" property="rid" />
@@ -58,7 +58,7 @@
 	</update>
 
 	<select id="searchUserByName" resultMap="userMap">
-		select * from db_user where name = #{name}
+		select uid,pid,rid,name,password,trueName,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%s') as createTime,DATE_FORMAT(updateTime,'%Y-%m-%d %H:%i:%s') as updateTime from db_user where name = #{name}
 	</select>
 
 	<sql id="getUserComb">
@@ -82,7 +82,9 @@
 	</select>
 
 	<select id="searchUser" resultMap="userCombMap">
-		select u.*,p.*,r.*
+		select u.uid,u.pid,u.rid,u.name,u.password,u.trueName,DATE_FORMAT(u.createTime,'%Y-%m-%d %H:%i:%s') as ucreateTime,DATE_FORMAT(u.updateTime,'%Y-%m-%d %H:%i:%s') as uupdateTime,
+		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+		r.rid,r.roleName
 		from db_user u
 		left join db_project p on u.pid = p.pid
 		left join db_roleinfo r on u.rid = r.rid where 1 = 1

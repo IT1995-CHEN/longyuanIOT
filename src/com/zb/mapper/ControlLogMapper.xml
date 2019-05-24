@@ -16,14 +16,14 @@
 		<result column="beginTime" property="beginTime" />
 		<result column="endTime" property="endTime" />
 		<result column="duration" property="duration" />
-		<result column="createtime" property="createtime" />
+		<result column="lcreatetime" property="createtime" />
 		<association property="deviceInfo" javaType="com.zb.entity.DeviceInfo" column="deviceNum">
 			<id column="did" property="did" />
 			<result column="pid" property="pid" />
 			<result column="deviceName" property="deviceName" />
 			<result column="deviceNum" property="deviceNum" />
 			<result column="deviceDes" property="deviceDes" />
-			<result column="createTime" property="createTime" />
+			<result column="dcreateTime" property="createTime" />
 		</association>
 	</resultMap>
 	
@@ -84,7 +84,10 @@
 	</select>
 	
 	<select id="searchControlLog" resultMap="controlLogMap">
-		select l.*,d.* from db_controllog l
+		select l.lid,l.deviceNum,l.hisstate,l.hisinfo,l.taskNum,l.operationOrder,l.person,l.kind,l.qualConfig,l.minVal,l.maxVal,
+		l.beginTime,l.endTime,l.duration,DATE_FORMAT(l.createtime,'%Y-%m-%d %H:%i:%s') as lcreatetime, 
+		d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+		from db_controllog l
 		left join db_deviceinfo d on l.deviceNum = d.deviceNum where 1 = 1
 		<include refid="getControlLog"></include>
 		order by lid desc
