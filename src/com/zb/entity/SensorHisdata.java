@@ -7,6 +7,7 @@ public class SensorHisdata {
 	private String deviceNum;
 	private String hisVal;
 	private String createTime;
+	
 	public Integer getHid() {
 		return hid;
 	}

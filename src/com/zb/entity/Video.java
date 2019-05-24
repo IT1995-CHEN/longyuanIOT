@@ -7,6 +7,7 @@ public class Video {
 	private String monitorName;
 	private String monitorAdd;
 	private String createTime;
+	
 	public Integer getVid() {
 		return vid;
 	}

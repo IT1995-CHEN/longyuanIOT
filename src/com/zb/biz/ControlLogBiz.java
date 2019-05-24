@@ -8,7 +8,6 @@ public interface ControlLogBiz {
 
 	public boolean addControlLog(ControlLog controlLog);
 	
-	
 	public PageUtil<ControlLogComb> searchControlLog(String deviceNum,String hisstate,String hisinfo,
 			Integer taskNum,String operationOrder,String person,
 			String kind,String qualConfig,String minVal,String maxVal,

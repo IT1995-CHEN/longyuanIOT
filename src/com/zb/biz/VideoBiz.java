@@ -6,7 +6,6 @@ import com.zb.util.PageUtil;
 
 public interface VideoBiz {
 
-
 	public boolean addVideo(Video video);
 
 	public boolean updateVideo(Video video);

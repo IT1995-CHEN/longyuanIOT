@@ -7,6 +7,7 @@ public class Control {
 	private String deviceNum;
 	private String operationState;
 	private String updateTime;
+	
 	public Integer getCid() {
 		return cid;
 	}

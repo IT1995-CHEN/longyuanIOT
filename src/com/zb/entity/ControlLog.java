@@ -1,6 +1,7 @@
 package com.zb.entity;
 
 public class ControlLog {
+	
 	private Integer lid;
 	private String deviceNum;
 	private String hisstate;

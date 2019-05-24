@@ -1,6 +1,7 @@
 package com.zb.entity;
 
 public class Project {
+	
 	private Integer pid;
 	private String projectName;
 	private String projectAddress;
