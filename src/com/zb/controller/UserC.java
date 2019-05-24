@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.UserBiz;
@@ -20,7 +21,7 @@ public class UserC {
 	private UserBiz userBiz;
 	
 	@ResponseBody
-	@RequestMapping("/addUser")
+	@RequestMapping(value="addUser",method=RequestMethod.POST)
 	public Map<String,String> addUser(User user) {
 		boolean f = userBiz.addUser(user);
 		Map<String,String> map = new HashMap<String,String>();
@@ -34,7 +35,7 @@ public class UserC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/updateUser")
+	@RequestMapping(value="updateUser",method=RequestMethod.PUT)
 	public Map<String,String> updateProject(User user) {
 		boolean f = userBiz.updateUser(user);
 		Map<String,String> map = new HashMap<String, String>();
@@ -47,7 +48,7 @@ public class UserC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/deleteUser")
+	@RequestMapping(value="deleteUser",method=RequestMethod.DELETE)
 	public Map<String,String> deleteUser(Integer uid) {
 		boolean f = userBiz.deleteUser(uid);
 		Map<String,String> map = new HashMap<String, String>();
@@ -60,7 +61,7 @@ public class UserC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/login")
+	@RequestMapping(value="login",method=RequestMethod.GET)
 	public Map<String,String> login(String name,String password) {
 		boolean f = userBiz.login(name, password);
 		Map<String,String> map = new HashMap<String,String>();
@@ -74,7 +75,7 @@ public class UserC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/countUser")
+	@RequestMapping(value="countUser",method=RequestMethod.GET)
 	public Integer searchCount(String name,Integer pid,Integer uid){
 		Integer cnt = userBiz.searchCount(name, pid, uid);
 		
@@ -83,7 +84,7 @@ public class UserC {
 	
 	
 	@ResponseBody
-	@RequestMapping("/searchUser")
+	@RequestMapping(value="searchUser",method=RequestMethod.GET)
 	public PageUtil<UserComb> searchUser(String name,Integer pid,Integer index,Integer size,Integer uid){
 		PageUtil<UserComb> page = new PageUtil<UserComb>();
 		if(index!=null&&!index.equals("")) {

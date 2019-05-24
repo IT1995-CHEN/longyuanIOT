@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.VideoBiz;
@@ -20,7 +21,7 @@ public class VideoC {
 	private VideoBiz videoBiz;
 	
 	@ResponseBody
-	@RequestMapping("/addVideo")
+	@RequestMapping(value="addVideo",method=RequestMethod.POST)
 	public Map<String,String> addVideo(Video video) {
 		boolean f = videoBiz.addVideo(video);
 		Map<String,String> map = new HashMap<String, String>();
@@ -34,7 +35,7 @@ public class VideoC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/updateVideo")
+	@RequestMapping(value="updateVideo",method=RequestMethod.PUT)
 	public Map<String,String> updateVideo(Video video) {
 		boolean f = videoBiz.updateVideo(video);
 		Map<String,String> map = new HashMap<String, String>();
@@ -47,7 +48,7 @@ public class VideoC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/deleteVideo")
+	@RequestMapping(value="deleteVideo",method=RequestMethod.DELETE)
 	public Map<String,String> deleteVideo(Integer vid) {
 		boolean f = videoBiz.deleteVideo(vid);
 		Map<String,String> map = new HashMap<String, String>();
@@ -60,14 +61,14 @@ public class VideoC {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/countVideo")
+	@RequestMapping(value="countVideo",method=RequestMethod.GET)
 	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,Integer vid) {
 		Integer cnt = videoBiz.searchCount(pid, monitorName, monitorAdd, vid);
 		return cnt;
 	}
 	
 	@ResponseBody
-	@RequestMapping("/searchVideo")
+	@RequestMapping(value="searchVideo",method=RequestMethod.GET)
 	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,Integer vid,Integer index,Integer size){
 		PageUtil<VideoComb> page = new PageUtil<VideoComb>();
 		if(index!=null&&!index.equals("")) {
