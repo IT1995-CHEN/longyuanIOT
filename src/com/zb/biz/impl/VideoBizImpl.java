@@ -12,7 +12,7 @@ import com.zb.entity.VideoComb;
 import com.zb.mapper.VideoMapper;
 import com.zb.util.PageUtil;
 
-@Service("video")
+@Service("db_video")
 public class VideoBizImpl implements VideoBiz {
 	@Autowired
 	private VideoMapper videoMapper;
