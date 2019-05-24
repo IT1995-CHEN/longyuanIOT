@@ -46,7 +46,7 @@
 			and p.projectName=#{projectName}
 		</if>
 		<if test="deviceName!=null and deviceName != ''">
-			and d.deviceName=#{deviceName}
+			and d.deviceName like concat('%',#{deviceName},'%')
 		</if>
 		<if test="deviceNum!=null and deviceNum != ''">
 			and d.deviceNum=#{deviceNum}
