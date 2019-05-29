@@ -6,18 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zb.biz.ControlBiz;
 import com.zb.biz.ControlLogBiz;
 import com.zb.entity.ControlLog;
 import com.zb.entity.ControlLogComb;
+import com.zb.entity.SensorHisdata;
+import com.zb.entity.SensorNowdata;
 import com.zb.mapper.ControlLogMapper;
+import com.zb.mapper.ControlMapper;
 import com.zb.util.PageUtil;
 @Service("db_controllog")
 public class ControlLogBizImpl implements ControlLogBiz {
 	@Autowired
 	private ControlLogMapper controlLogMapper;
-
+	
 	@Transactional
 	public boolean addControlLog(ControlLog controlLog){
+	
 		boolean flag = controlLogMapper.addControlLog(controlLog);
 		return flag;
 	}

@@ -1,5 +1,8 @@
 package com.zb.biz;
 
+import java.util.List;
+
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import com.zb.entity.User;
 import com.zb.entity.UserComb;
 import com.zb.util.PageUtil;
@@ -17,5 +20,8 @@ public interface UserBiz {
 	public Integer searchCount(String name,Integer pid,Integer uid);
 	
 	public PageUtil<UserComb> searchUser(String name,Integer pid,PageUtil<UserComb> page,Integer uid);
+
+	public List<UserComb> selectUser(String name);
+
 
 }

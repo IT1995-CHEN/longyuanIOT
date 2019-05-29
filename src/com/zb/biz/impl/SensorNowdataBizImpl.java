@@ -1,17 +1,23 @@
 package com.zb.biz.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.SensorNowdataBiz;
+import com.zb.entity.SensorCount;
 import com.zb.entity.SensorHisdata;
 import com.zb.entity.SensorNowdata;
 import com.zb.entity.SensorNowdataComb;
 import com.zb.mapper.SensorHisdataMapper;
 import com.zb.mapper.SensorNowdataMapper;
+import com.zb.util.RemoveDupList;
 
 @Service("db_sensorNowdata")
 public class SensorNowdataBizImpl implements SensorNowdataBiz {
@@ -46,5 +52,34 @@ public class SensorNowdataBizImpl implements SensorNowdataBiz {
 		List<SensorNowdataComb> sensorNowdataCombs = sensorNowdataMapper.selectNowData(deviceNum, pid);
 		return sensorNowdataCombs;
 	}
+
+	@Override
+	public  SensorCount pSensorCount() {
+		// TODO Auto-generated method stub
+		List<SensorNowdataComb> sensorNowdata=  sensorNowdataMapper.selectSensorName();
+		List<String> nameList=new ArrayList<>();
+		List<Integer> countList=new ArrayList<>();
+		for (int i = 0; i < sensorNowdata.size(); i++) {
+			String deviceNameString=sensorNowdata.get(i).getDeviceInfo().getDeviceName();
+			System.out.println(sensorNowdata.get(i).getDeviceInfo().getDeviceName());
+			nameList.add(deviceNameString);
+		}
+		nameList=new RemoveDupList().removeDupString(nameList);
+		for (int i = 0; i < nameList.size(); i++) {
+			String deviceNameString=nameList.get(i);
+			Integer count = sensorNowdataMapper.pSensorCount(deviceNameString);
+			countList.add(count);
+		}
+		SensorCount sensorCount = new SensorCount();
+		sensorCount.setTableNameString("正在使用的传感器数量");
+		sensorCount.setSensorNameList(nameList);
+		sensorCount.setSensorCountList(countList);
+		
+		return sensorCount;
+	}
+
+	
+
+	
 
 }

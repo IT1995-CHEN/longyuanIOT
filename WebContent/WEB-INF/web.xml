@@ -14,19 +14,19 @@
 	</listener>
 
 
-	<filter>
-		<filter-name>myEncoding</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<async-supported>true</async-supported>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>myEncoding</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+<filter>
+     <filter-name>CharacterEncoding</filter-name>
+     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+     <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+     </init-param>
+  </filter>
+  <filter-mapping>
+     <filter-name>CharacterEncoding</filter-name>
+     <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 
 
 	<filter>

@@ -38,19 +38,26 @@ public class VideoBizImpl implements VideoBiz {
 		return flag;
 	}
 
-	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,Integer vid) {
-		Integer cnt = videoMapper.searchCount(pid, monitorName, monitorAdd, vid);
+	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,String monitorArea,Integer vid) {
+		Integer cnt = videoMapper.searchCount(pid, monitorName, monitorAdd,monitorArea, vid);
 		return cnt;
 	}
 
-	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,Integer vid,PageUtil<VideoComb> page){
-		List<VideoComb> videoCombs = videoMapper.searchVideo(pid,monitorName,monitorAdd,vid,(page.getIndex() - 1) * page.getSize(), page.getSize());
+	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,String monitorArea,Integer vid,PageUtil<VideoComb> page){
+		List<VideoComb> videoCombs = videoMapper.searchVideo(pid,monitorName,monitorAdd,monitorArea,vid,(page.getIndex() - 1) * page.getSize(), page.getSize());
 		page.setPage(videoCombs);
 		
-		int count = videoMapper.searchCount(pid, monitorName, monitorAdd, vid);
+		int count = videoMapper.searchCount(pid, monitorName, monitorAdd,monitorArea, vid);
 		page.setCount(count);
 		
 		return page;
+	}
+
+	@Override
+	public List<VideoComb> selectVideo(Integer pid, String monitorName,
+			String monitorAdd, String monitorArea, Integer vid) {
+		// TODO Auto-generated method stub
+		return videoMapper.selectVideo(pid, monitorName, monitorAdd, monitorArea, vid);
 	}
 
 }

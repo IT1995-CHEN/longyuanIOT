@@ -6,6 +6,7 @@
 		<id column="vid" property="vid" />
 		<result column="monitorName" property="monitorName" />
 		<result column="monitorAdd" property="monitorAdd" />
+		<result column="monitorArea" property="monitorArea" />
 		<result column="vcreateTime" property="createTime" />
 		<association property="project" javaType="com.zb.entity.Project" column="pid">
 			<id column="pid" property="pid" />
@@ -20,8 +21,8 @@
 	</resultMap>
 
 	<insert id="addVideo" parameterType="Video">
-		insert into db_video(vid,pid,monitorName,monitorAdd,createTime)
-		values(null,#{pid},#{monitorName},#{monitorAdd},CURRENT_TIMESTAMP)
+		insert into db_video(vid,pid,monitorName,monitorAdd,monitorArea,createTime)
+		values(null,#{pid},#{monitorName},#{monitorAdd},#{monitorArea},CURRENT_TIMESTAMP)
 	</insert>
 
 	<delete id="deleteVideo" parameterType="Integer">
@@ -34,6 +35,7 @@
 			<if test="pid!=null and pid != ''">pid=#{pid},</if>
 			<if test="monitorName!=null and monitorName != ''">monitorName=#{monitorName},</if>
 			<if test="monitorAdd!=null and monitorAdd != ''">monitorAdd=#{monitorAdd},</if>
+			<if test="monitorArea!=null and monitorArea != ''">monitorArea=#{monitorArea},</if>
 			createTime=(SELECT CURRENT_TIMESTAMP)
 		</set>
 		where vid = #{vid}
@@ -44,11 +46,14 @@
 			and p.pid=#{pid}
 		</if>
 		<if test="monitorName!=null and monitorName != ''">
-			and v.monitorName=#{monitorName}
+			and v.monitorName like concat('%',#{monitorName},'%')
 		</if>
 		<if test="monitorAdd!=null and monitorAdd != ''">
 			and v.monitorAdd=#{monitorAdd}
 		</if>
+		<if test="monitorArea!=null and monitorArea != ''">
+            and v.monitorArea=#{monitorArea}
+        </if>
 		<if test="vid!=null and vid != ''">
 			and v.vid=#{vid}
 		</if>
@@ -63,7 +68,7 @@
 	</select>
 
 	<select id="searchVideo" resultMap="videoCombMap">
-		select v.vid,v.pid,v.monitorName,v.monitorAdd,DATE_FORMAT(v.createTime,'%Y-%m-%d %H:%i:%s') as vcreateTime,
+		select v.vid,v.pid,v.monitorName,v.monitorAdd,v.monitorArea,DATE_FORMAT(v.createTime,'%Y-%m-%d %H:%i:%s') as vcreateTime,
 		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime
 		from db_video v
 		left join db_project p on v.pid = p.pid where 1 = 1
@@ -71,6 +76,16 @@
 		order by vid desc
 	  	limit #{index} ,#{size}
 	</select>
+
+    <select id="selectVideo" resultMap="videoCombMap">
+        select v.vid,v.pid,v.monitorName,v.monitorAdd,v.monitorArea,DATE_FORMAT(v.createTime,'%Y-%m-%d %H:%i:%s') as vcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime
+        from db_video v
+        left join db_project p on v.pid = p.pid where 1 = 1
+        <include refid="getVideo"></include>
+        order by vid desc
+    
+    </select>
 
 
 </mapper>

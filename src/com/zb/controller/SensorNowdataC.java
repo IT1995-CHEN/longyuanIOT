@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.SensorNowdataBiz;
+import com.zb.entity.SensorCount;
 import com.zb.entity.SensorNowdata;
 import com.zb.entity.SensorNowdataComb;
 
@@ -52,5 +53,12 @@ public class SensorNowdataC {
 	public List<SensorNowdataComb> selectNowData(String deviceNum,Integer pid){
 		List<SensorNowdataComb> sensorNowdataCombs = sensorNowBiz.selectNowData(deviceNum, pid);
 		return sensorNowdataCombs;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/pSensorCount")
+	public SensorCount pSensorCount(){
+		SensorCount sensorCount = sensorNowBiz.pSensorCount();
+		return sensorCount;
 	}
 }

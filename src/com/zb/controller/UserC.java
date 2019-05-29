@@ -1,6 +1,7 @@
 package com.zb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +63,33 @@ public class UserC {
 	
 	@ResponseBody
 	@RequestMapping(value="login",method=RequestMethod.GET)
-	public Map<String,String> login(String name,String password) {
+	public Map<String,Object> login(String name,String password) {
+		boolean f = userBiz.login(name, password);
+		Map<String, Object> map = new HashMap<String,Object>();
+		if(f==true) {
+			List<UserComb> userComb= userBiz.selectUser(name);
+			map.put("values", "登录成功");
+			map.put("code", "1");
+			map.put("userInfo", userComb);
+		}else {
+			map.put("values", "登录失败");
+			map.put("code", "0");
+		}
+		return map;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="reset",method=RequestMethod.POST)
+	public Map<String,String> reset(String uid,String name,String password) {
 		boolean f = userBiz.login(name, password);
 		Map<String,String> map = new HashMap<String,String>();
 		if(f==true) {
 			map.put("ok", "登录成功");
+			map.put("code", "1");
 		}else {
 			map.put("ok", "登录失败");
+			map.put("code", "0");
 		}
 		return map;
 		

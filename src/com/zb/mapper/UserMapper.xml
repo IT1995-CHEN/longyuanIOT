@@ -63,7 +63,7 @@
 
 	<sql id="getUserComb">
 		<if test="name!=null and name != ''">
-			and u.name=#{name}
+			and u.name like concat('%',#{name},'%')
 		</if>
 		<if test="pid!=null and pid != ''">
 			and u.pid=#{pid}
@@ -93,4 +93,20 @@
 	  	limit #{index} ,#{size}
 	</select>
 
+
+<sql id="getUserCombs">
+<if test="name!=null and name != ''">
+            and u.name like concat('%',#{name},'%')
+        </if>
+</sql>
+    <select id="selectUser" resultMap="userCombMap">
+        select u.uid,u.pid,u.rid,u.name,u.password,u.trueName,DATE_FORMAT(u.createTime,'%Y-%m-%d %H:%i:%s') as ucreateTime,DATE_FORMAT(u.updateTime,'%Y-%m-%d %H:%i:%s') as uupdateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        r.rid,r.roleName
+        from db_user u
+        left join db_project p on u.pid = p.pid
+        left join db_roleinfo r on u.rid = r.rid where 1 = 1
+        <include refid="getUserCombs"></include>
+        order by uid desc
+    </select>
 </mapper>

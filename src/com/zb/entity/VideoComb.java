@@ -6,6 +6,7 @@ public class VideoComb {
 	private Project project;
 	private String monitorName;
 	private String monitorAdd;
+	private String monitorArea;
 	private String createTime;
 	
 	public Integer getVid() {
@@ -31,6 +32,13 @@ public class VideoComb {
 	}
 	public void setMonitorAdd(String monitorAdd) {
 		this.monitorAdd = monitorAdd;
+	}
+	
+	public String getMonitorArea() {
+		return monitorArea;
+	}
+	public void setMonitorArea(String monitorArea) {
+		this.monitorArea = monitorArea;
 	}
 	public String getCreateTime() {
 		return createTime;

@@ -15,8 +15,10 @@ public interface DeviceInfoMapper {
 
 	public boolean deleteDevice(@Param("did")Integer did);
 
-	public Integer searchCount(@Param("projectName")String projectName,@Param("deviceName")String deviceName,@Param("deviceNum")String deviceNum);
+	public Integer searchCount(@Param("projectName")String projectName,@Param("deviceName")String deviceName,@Param("deviceNum")String deviceNum,@Param("deviceDes")String deviceDes);
 	
-	public List<DeviceComb> searchDevice(@Param("projectName")String projectName,@Param("deviceName")String deviceName,@Param("deviceNum")String deviceNum,@Param("index")Integer index,@Param("size")Integer size);
+	public List<DeviceComb> searchDevice(@Param("projectName")String projectName,@Param("deviceName")String deviceName,@Param("deviceNum")String deviceNum,@Param("deviceDes")String deviceDes,@Param("index")Integer index,@Param("size")Integer size);
+	
+	public List<DeviceInfo> selectDevice(@Param("did")Integer did,@Param("pid")Integer pid,@Param("projectName")String projectName,@Param("deviceName")String deviceName,@Param("deviceNum")String deviceNum,@Param("deviceDes")String deviceDes);
 
 }

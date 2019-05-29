@@ -15,9 +15,9 @@ public interface VideoMapper {
 
 	public boolean deleteVideo(@Param("vid")Integer vid);
 	
-	public Integer searchCount(@Param("pid")Integer pid,@Param("monitorName")String monitorName,@Param("monitorAdd")String monitorAdd,@Param("vid")Integer vid);
+	public Integer searchCount(@Param("pid")Integer pid,@Param("monitorName")String monitorName,@Param("monitorAdd")String monitorAdd,@Param("monitorArea")String monitorArea,@Param("vid")Integer vid);
 
-	public List<VideoComb> searchVideo(@Param("pid")Integer pid,@Param("monitorName")String monitorName,@Param("monitorAdd")String monitorAdd,@Param("vid")Integer vid,@Param("index")Integer index,@Param("size")Integer size);
+	public List<VideoComb> searchVideo(@Param("pid")Integer pid,@Param("monitorName")String monitorName,@Param("monitorAdd")String monitorAdd,@Param("monitorArea")String monitorArea,@Param("vid")Integer vid,@Param("index")Integer index,@Param("size")Integer size);
 
-	
+	public List<VideoComb> selectVideo(@Param("pid")Integer pid,@Param("monitorName")String monitorName,@Param("monitorAdd")String monitorAdd,@Param("monitorArea")String monitorArea,@Param("vid")Integer vid);
 }

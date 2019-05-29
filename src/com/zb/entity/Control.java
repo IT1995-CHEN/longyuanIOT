@@ -38,6 +38,8 @@ public class Control {
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
+
+
 	
 	
 

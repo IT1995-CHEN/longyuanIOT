@@ -2,6 +2,7 @@ package com.zb.biz;
 
 import java.util.List;
 
+import com.zb.entity.SensorCount;
 import com.zb.entity.SensorNowdata;
 import com.zb.entity.SensorNowdataComb;
 
@@ -13,4 +14,5 @@ public interface SensorNowdataBiz {
 
 	public List<SensorNowdataComb> selectNowData(String deviceNum,Integer pid);
 
+	public SensorCount pSensorCount();
 }

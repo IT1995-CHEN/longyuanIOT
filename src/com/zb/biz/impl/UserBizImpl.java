@@ -2,6 +2,7 @@ package com.zb.biz.impl;
 
 import java.util.List;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,7 @@ public class UserBizImpl implements UserBiz {
 			return false;
 		}
 		if(userMapper.searchUserByName(name)!=null){
-			if (password.equals(userMapper.searchUserByName(name).getName())) {
+			if (password.equals(userMapper.searchUserByName(name).getPassword())) {
 				return true;
 			}
 		}
@@ -66,7 +67,20 @@ public class UserBizImpl implements UserBiz {
 		page.setCount(count);
 		
 		return page;
+		
+
 	}
+
+	@Override
+	public List<UserComb> selectUser(String name) {
+		// TODO Auto-generated method stub
+		List<UserComb> userCombs= userMapper.selectUser(name);
+		return userCombs;
+	}
+
+
+
+
 
 }
 

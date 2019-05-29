@@ -75,4 +75,21 @@
 		<include refid="getNowdata"></include>
 		order by nid desc
 	</select>
+	
+	<select id="pSensorCount" resultType="Int">
+        select count(*)
+        from db_sensornowdata n
+        left join db_project p on n.pid = p.pid
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum where deviceName=#{deviceName}
+
+    </select>
+
+    <select id="selectSensorName" resultMap="sensorNowdataCombMap" >
+        select n.nid,n.pid,n.deviceNum,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensornowdata n
+        left join db_project p on n.pid = p.pid
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum where 1 = 1
+    </select>
 </mapper>

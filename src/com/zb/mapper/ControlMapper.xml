@@ -18,11 +18,11 @@
 		update db_control
 		<set>
 			<if test="pid!=null and pid != ''">pid=#{pid},</if>
-			<if test="deviceNum!=null and deviceNum != ''">deviceNum=#{deviceNum},</if>
+			<!-- <if test="deviceNum!=null and deviceNum != ''">deviceNum=#{deviceNum},</if> -->
 			<if test="operationState!=null and operationState != ''">operationState=#{operationState},</if>
 			updateTime=(SELECT CURRENT_TIMESTAMP)
 		</set>
-		where cid = #{cid}
+		where deviceNum = #{deviceNum}
 	</update>
 
 	

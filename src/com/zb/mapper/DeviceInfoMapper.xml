@@ -49,8 +49,11 @@
 			and d.deviceName like concat('%',#{deviceName},'%')
 		</if>
 		<if test="deviceNum!=null and deviceNum != ''">
-			and d.deviceNum=#{deviceNum}
+			and d.deviceNum like concat('%',#{deviceNum},'%')
 		</if>
+		<if test="deviceDes!=null and deviceDes != ''">
+            and d.deviceDes=#{deviceDes}
+        </if>
 
 	</sql>
 
@@ -71,4 +74,36 @@
 	  	limit #{index} ,#{size}
 	</select>
 
+    <sql id="getDevice">
+      <if test="did!=null and did != ''">
+            and d.did=#{did}
+        </if>
+        <if test="pid!=null and pid != ''">
+            and d.pid=#{pid}
+        </if>
+        <if test="deviceName!=null and deviceName != ''">
+            and d.deviceName like concat('%',#{deviceName},'%')
+        </if>
+        <if test="deviceNum!=null and deviceNum != ''">
+            and d.deviceNum=#{deviceNum}
+        </if>
+          <if test="deviceDes!=null and deviceDes != ''">
+            and d.deviceDes=#{deviceDes}
+        </if>
+
+    </sql>
+    <resultMap type="com.zb.entity.DeviceInfo" id="selectDeviceMap">
+        <id column="did" property="did" />
+        <result column="pid" property="pid"/>
+        <result column="deviceName" property="deviceName" />
+        <result column="deviceNum" property="deviceNum" />
+        <result column="deviceDes" property="deviceDes" />
+        <result column="createTime" property="createTime" />
+    </resultMap>
+    <select id="selectDevice" resultMap="selectDeviceMap">
+        select d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as createTime  from db_deviceinfo d
+       where 1=1
+        <include refid="getDevice"></include>
+        
+    </select>
 </mapper>

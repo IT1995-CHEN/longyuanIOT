@@ -1,6 +1,7 @@
 package com.zb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +63,14 @@ public class VideoC {
 	
 	@ResponseBody
 	@RequestMapping(value="countVideo",method=RequestMethod.GET)
-	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,Integer vid) {
-		Integer cnt = videoBiz.searchCount(pid, monitorName, monitorAdd, vid);
+	public Integer searchCount(Integer pid,String monitorName,String monitorAdd,String monitorArea,Integer vid) {
+		Integer cnt = videoBiz.searchCount(pid, monitorName, monitorAdd,monitorArea, vid);
 		return cnt;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="searchVideo",method=RequestMethod.GET)
-	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,Integer vid,Integer index,Integer size){
+	public PageUtil<VideoComb> searchVideo(Integer pid,String monitorName,String monitorAdd,String monitorArea,Integer vid,Integer index,Integer size){
 		PageUtil<VideoComb> page = new PageUtil<VideoComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
@@ -77,8 +78,15 @@ public class VideoC {
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<VideoComb> pageUtil = videoBiz.searchVideo(pid, monitorName, monitorAdd, vid, page);
+		PageUtil<VideoComb> pageUtil = videoBiz.searchVideo(pid, monitorName, monitorAdd, monitorArea, vid, page);
 		return pageUtil;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectVideo",method=RequestMethod.GET)
+	public List<VideoComb> selectVideo(Integer pid,String monitorName,String monitorAdd,String monitorArea,Integer vid){
+
+		return videoBiz.selectVideo(pid, monitorName, monitorAdd, monitorArea, vid);
 	}
 	
 	
