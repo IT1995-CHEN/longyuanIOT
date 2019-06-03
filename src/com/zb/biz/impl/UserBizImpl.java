@@ -78,6 +78,12 @@ public class UserBizImpl implements UserBiz {
 		return userCombs;
 	}
 
+	@Override
+	public List<User> selectUserByUid(Integer uid) {
+		// TODO Auto-generated method stub
+		return userMapper.selectUserByUid(uid);
+	}
+
 
 
 

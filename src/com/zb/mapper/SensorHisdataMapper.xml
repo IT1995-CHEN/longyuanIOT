@@ -48,20 +48,32 @@
 	</sql>
 
 	<select id="searchCount" resultType="Integer">
-		select count(*)
+	<!-- 	select count(*)
 		from db_sensorhisdata h
 		left join db_project p on h.pid = p.pid
-		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1 -->
+		SELECT count(*) from (select h.hid,h.hisVal,DATE_FORMAT(h.createTime,'%Y-%m-%d %H:%i:%s') as hcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensorhisdata h 
+        left join db_project p on h.pid = p.pid
+        left join db_deviceinfo d on h.deviceNum = d.deviceNum) sh ,db_sensorinfo s WHERE sh.deviceName =s.sensid 
 	 	<include refid="getSensorHisdata"></include>
 	</select>
 
 	<select id="searchHisData" resultMap="sensorHisdataCombMap">
-		select h.hid,h.pid,h.deviceNum,h.hisVal,DATE_FORMAT(h.createTime,'%Y-%m-%d %H:%i:%s') as hcreateTime,
+		<!-- select h.hid,h.pid,h.deviceNum,h.hisVal,DATE_FORMAT(h.createTime,'%Y-%m-%d %H:%i:%s') as hcreateTime,
 		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
 		d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
 		from db_sensorhisdata h
 		left join db_project p on h.pid = p.pid
-		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
+		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1 -->
+		SELECT hid,hisVal,hcreateTime,pid,projectName,projectAddress,log,lat,projectInfo,projectImg,pcreateTime,did,s.sensorName as deviceName,deviceNum,deviceDes,dcreateTime from (select h.hid,h.hisVal,DATE_FORMAT(h.createTime,'%Y-%m-%d %H:%i:%s') as hcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensorhisdata h
+        left join db_project p on h.pid = p.pid
+        left join db_deviceinfo d on h.deviceNum = d.deviceNum) sh ,db_sensorinfo s WHERE sh.deviceName =s.sensid 
 		<include refid="getSensorHisdata"></include>
 		order by hid desc
 	  	limit #{index} ,#{size}
@@ -77,12 +89,12 @@
 	</sql>
 	
 	<select id="selectHisData" resultMap="sensorHisdataCombMap">
-		select h.hid,h.pid,h.deviceNum,h.hisVal,DATE_FORMAT(h.createTime,'%Y-%m-%d %H:%i:%s') as hcreateTime,
-		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
-		d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
-		from db_sensorhisdata h
-		left join db_project p on h.pid = p.pid
-		left join db_deviceinfo d on h.deviceNum = d.deviceNum where 1 = 1
+		SELECT hid,hisVal,hcreateTime,pid,projectName,projectAddress,log,lat,projectInfo,projectImg,pcreateTime,did,s.sensorName as deviceName,deviceNum,deviceDes,dcreateTime from (select h.hid,h.hisVal,DATE_FORMAT(h.createTime,'%Y-%m-%d %H:%i:%s') as hcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensorhisdata h
+        left join db_project p on h.pid = p.pid
+        left join db_deviceinfo d on h.deviceNum = d.deviceNum) sh ,db_sensorinfo s WHERE sh.deviceName =s.sensid 
 		<include refid="getHisdata"></include>
 		order by hid desc
 	</select>

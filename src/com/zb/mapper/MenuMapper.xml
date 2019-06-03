@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.MenuMapper">
+
+    <resultMap type="com.zb.entity.Menu" id="menuMap">
+        <id column="fid" property="fid" />
+        <result column="pid" property="pid" />
+        <result column="icon" property="icon" />
+        <result column="nurl" property="nurl" />
+        <result column="mname" property="mname" /> 
+        <collection property="list" ofType="com.zb.entity.SecondMenu" >
+            <result column="sid"    property="sid"/>
+            <result column="spid"   property="pid"/>
+            <result column="sfid" property="fid" />
+            <result column="sicon" property="icon" />
+            <result column="snurl" property="nurl" />
+            <result column="smname" property="mname" />
+            
+        </collection>
+    </resultMap>
+
+    <select id="selectMenu" resultMap="menuMap">
+        select * from (select f.*,s.sid,s.pid as spid,s.fid as sfid,s.icon as sicon,s.nurl as snurl,s.mname as smname from db_firstmenu f  LEFT JOIN db_secondmenu s on f.fid=s.fid) m 
+        where  m.pid=#{pid}  ORDER BY fid ASC
+    </select>
+</mapper>

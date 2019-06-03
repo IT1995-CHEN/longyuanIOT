@@ -22,5 +22,7 @@ public interface UserMapper {
 	public List<UserComb> searchUser(@Param("name")String name,@Param("pid")Integer pid,@Param("index")Integer index,@Param("size")Integer size,@Param("uid")Integer uid);
 
 	public List<UserComb> selectUser(@Param("name")String name);
+	
+	public List<User> selectUserByUid(@Param("uid") Integer uid);
 }
 

@@ -95,9 +95,12 @@
 
 
 <sql id="getUserCombs">
-<if test="name!=null and name != ''">
+        <if test="name!=null and name != ''">
             and u.name like concat('%',#{name},'%')
         </if>
+   <!--    <if test="uid!=null and uid != ''">
+            and u.uid=#{uid}
+        </if> -->
 </sql>
     <select id="selectUser" resultMap="userCombMap">
         select u.uid,u.pid,u.rid,u.name,u.password,u.trueName,DATE_FORMAT(u.createTime,'%Y-%m-%d %H:%i:%s') as ucreateTime,DATE_FORMAT(u.updateTime,'%Y-%m-%d %H:%i:%s') as uupdateTime,
@@ -108,5 +111,10 @@
         left join db_roleinfo r on u.rid = r.rid where 1 = 1
         <include refid="getUserCombs"></include>
         order by uid desc
+    </select>
+    
+       <select id="selectUserByUid" resultMap="userMap">
+       select * from db_user where uid=#{uid}
+       
     </select>
 </mapper>

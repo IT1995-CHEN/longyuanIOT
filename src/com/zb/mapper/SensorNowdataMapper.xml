@@ -66,30 +66,50 @@
 	</select>
 	
 	<select id="selectNowData" resultMap="sensorNowdataCombMap">
-		select n.nid,n.pid,n.deviceNum,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
+	<!-- 	select n.nid,n.pid,n.deviceNum,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
 		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
 		d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
 		from db_sensornowdata n
 		left join db_project p on n.pid = p.pid
-		left join db_deviceinfo d on n.deviceNum = d.deviceNum where 1 = 1
+		left join db_deviceinfo d on n.deviceNum = d.deviceNum where 1 = 1 -->
+		
+		SELECT nid,val,nupdateTime,pid,projectName,projectAddress,log,lat,projectInfo,projectImg,pcreateTime,did,s.sensorName as deviceName,deviceNum,deviceDes,dcreateTime from (select n.nid,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensornowdata n
+        left join db_project p on n.pid = p.pid
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum) nd ,db_sensorinfo s WHERE nd.deviceName=s.sensid
 		<include refid="getNowdata"></include>
 		order by nid desc
 	</select>
 	
 	<select id="pSensorCount" resultType="Int">
-        select count(*)
+   <!--      select count(*)
         from db_sensornowdata n
         left join db_project p on n.pid = p.pid
-        left join db_deviceinfo d on n.deviceNum = d.deviceNum where deviceName=#{deviceName}
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum where deviceName=#{deviceName} -->
+            SELECT count(*)from (select n.nid,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensornowdata n
+        left join db_project p on n.pid = p.pid
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum) nd ,db_sensorinfo s WHERE nd.deviceName=s.sensid and
+         s.sensorName=#{deviceName}
 
     </select>
 
     <select id="selectSensorName" resultMap="sensorNowdataCombMap" >
-        select n.nid,n.pid,n.deviceNum,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
+       <!--  select n.nid,n.pid,n.deviceNum,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
         p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
         d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
         from db_sensornowdata n
         left join db_project p on n.pid = p.pid
-        left join db_deviceinfo d on n.deviceNum = d.deviceNum where 1 = 1
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum where 1 = 1 -->
+        SELECT nid,val,nupdateTime,pid,projectName,projectAddress,log,lat,projectInfo,projectImg,pcreateTime,did,s.sensorName as deviceName,deviceNum,deviceDes,dcreateTime from (select n.nid,n.val,DATE_FORMAT(n.updateTime,'%Y-%m-%d %H:%i:%s') as nupdateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+        from db_sensornowdata n
+        left join db_project p on n.pid = p.pid
+        left join db_deviceinfo d on n.deviceNum = d.deviceNum) nd ,db_sensorinfo s WHERE nd.deviceName=s.sensid
     </select>
 </mapper>

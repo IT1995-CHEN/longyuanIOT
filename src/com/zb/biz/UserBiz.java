@@ -22,6 +22,8 @@ public interface UserBiz {
 	public PageUtil<UserComb> searchUser(String name,Integer pid,PageUtil<UserComb> page,Integer uid);
 
 	public List<UserComb> selectUser(String name);
+	
+	public List<User> selectUserByUid(Integer uid);
 
 
 }

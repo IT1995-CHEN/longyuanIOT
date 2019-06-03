@@ -43,32 +43,39 @@
 
 	<sql id="getDeviceInfo">
 		<if test="projectName!=null and projectName != ''">
-			and p.projectName=#{projectName}
+			and projectName=#{projectName}
 		</if>
 		<if test="deviceName!=null and deviceName != ''">
-			and d.deviceName like concat('%',#{deviceName},'%')
+			and s.sensorName like concat('%',#{deviceName},'%')
 		</if>
 		<if test="deviceNum!=null and deviceNum != ''">
-			and d.deviceNum like concat('%',#{deviceNum},'%')
+			and deviceNum like concat('%',#{deviceNum},'%')
 		</if>
 		<if test="deviceDes!=null and deviceDes != ''">
-            and d.deviceDes=#{deviceDes}
+            and deviceDes=#{deviceDes}
         </if>
 
 	</sql>
 
 	<select id="searchCount" resultType="Integer">
-		select count(*)
+	<!-- 	select count(*)
 		from db_deviceinfo d
-		left join db_project p on d.pid = p.pid where 1 = 1
+		left join db_project p on d.pid = p.pid where 1 = 1 -->
+		SELECT count(*)  from (   select d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime,
+        p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime
+        from db_deviceinfo d left join db_project p on d.pid = p.pid )a , db_sensorinfo s WHERE a.deviceName =s.sensid
 	 	<include refid="getDeviceInfo"></include>
 	</select>
 
 	<select id="searchDevice" resultMap="deviceCombMap">
-		select d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime,
+		<!-- select d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime,
 		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime
 		from db_deviceinfo d
-		left join db_project p on d.pid = p.pid where 1 = 1
+		left join db_project p on d.pid = p.pid where 1 = 1 -->
+		SELECT a.did,a.pid,a.deviceNum,a.deviceDes,a.dcreateTime,a.projectName,a.projectAddress,a.log,a.lat,a.projectInfo,a.projectImg,a.pcreateTime,s.sensorName as deviceName  from (   select d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime,
+        p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime
+        from db_deviceinfo d
+        left join db_project p on d.pid = p.pid )a , db_sensorinfo s WHERE a.deviceName =s.sensid
 	 	<include refid="getDeviceInfo"></include>
 		order by did desc
 	  	limit #{index} ,#{size}

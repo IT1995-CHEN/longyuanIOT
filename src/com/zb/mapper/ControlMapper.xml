@@ -34,8 +34,14 @@
 		delete from db_control where deviceNum = #{deviceNum}
 	</delete>
 	
+	<sql id="getControl">
+	<if test="deviceNum!=null and deviceNum != ''">
+            and deviceNum=#{deviceNum}
+        </if>
+	</sql>
 	<select id="selectControl" resultMap="controlMap">
 		select cid,pid,deviceNum,operationState,DATE_FORMAT(updateTime,'%Y-%m-%d %H:%i:%s') as updateTime 
-		from db_control order by cid desc
+		from db_control where 1=1
+		<include refid="getControl"></include>
 	</select>
 </mapper>

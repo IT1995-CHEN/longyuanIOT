@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.ControlRunMapper">
+
+    <resultMap type="com.zb.entity.ControlRun" id="controlRunMap">
+       
+    </resultMap>
+    
+    <sql id="getControlRun">
+    <if test="deviceNum!=null and deviceNum != ''">
+            and deviceNum=#{deviceNum}
+        </if>
+    </sql>
+    <select id="selectControlRun" resultMap="controlRunMap">
+       select * from db_controlrun 
+        <include refid="getControlRun"></include>
+    </select>
+</mapper>

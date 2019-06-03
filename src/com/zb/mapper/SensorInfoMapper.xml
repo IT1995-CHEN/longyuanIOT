@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zb.mapper.SensorInfoMapper">
+    <resultMap type="com.zb.entity.SensorInfo" id="sensorInfoMap">
+        <id column="sensid" property="sensid" />
+        <result column="sensorName" property="sensorName" />
+      
+    </resultMap>    
+    
+
+
+    <select id="selectAllSensorName" resultMap="sensorInfoMap" >
+      SELECT * FROM db_sensorinfo where 1=1
+    </select>
+</mapper>

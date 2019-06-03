@@ -81,14 +81,20 @@ public class UserC {
 	
 	@ResponseBody
 	@RequestMapping(value="reset",method=RequestMethod.POST)
-	public Map<String,String> reset(String uid,String name,String password) {
-		boolean f = userBiz.login(name, password);
+	public Map<String,String> reset(Integer uid,String oldPassword,String newPassword) {
+		List<User> ouser = userBiz.selectUserByUid(uid);
+		String name = ouser.get(0).getName();
+		boolean f = userBiz.login(name, oldPassword);
 		Map<String,String> map = new HashMap<String,String>();
 		if(f==true) {
-			map.put("ok", "登录成功");
+			User user = new User();
+			user.setUid(uid);
+			user.setPassword(newPassword);
+			userBiz.updateUser(user);
+			map.put("ok", "修改成功");
 			map.put("code", "1");
 		}else {
-			map.put("ok", "登录失败");
+			map.put("ok", "修改失败");
 			map.put("code", "0");
 		}
 		return map;
