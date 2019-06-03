@@ -19,5 +19,5 @@ public interface SensorNowdataMapper {
 
 	public Integer pSensorCount(@Param("deviceName")String deviceName);
 	
-	public List<SensorNowdataComb> selectSensorName();
+	public List<SensorNowdataComb> selectSensorName(@Param("deviceNum")String deviceNum);
 }

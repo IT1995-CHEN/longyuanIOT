@@ -2,9 +2,11 @@ package com.zb.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.zb.entity.ControlRun;
+import com.zb.entity.ControlRunComb;
 import com.zb.util.PageUtil;
 
 
@@ -14,10 +16,10 @@ public interface ControlRunMapper {
 
 	public List<ControlRun> selectControlRun();
 	
-//	public PageUtil<ControlRun> searchControlRun(String deviceNum,String kind,String operator,Integer index,Integer size);
-//	
-//	public  int  countControlRun(String deviceNum,String kind,String operator);
-//	
-//	public  boolean  addControlRun(ControlRun controlRun);
+	public List<ControlRunComb> searchControlRun(@Param("deviceNum")String deviceNum,@Param("beginTime")String beginTime,@Param("endTime")String endTime,@Param("index")Integer index,@Param("size")Integer size);
+	
+	public  int  countControlRun(@Param("deviceNum")String deviceNum,@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+	public  boolean  addControlRun(ControlRun controlRun);
 	
 }

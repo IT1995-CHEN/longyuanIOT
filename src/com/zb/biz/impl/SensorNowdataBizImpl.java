@@ -56,7 +56,7 @@ public class SensorNowdataBizImpl implements SensorNowdataBiz {
 	@Override
 	public  SensorCount pSensorCount() {
 		// TODO Auto-generated method stub
-		List<SensorNowdataComb> sensorNowdata=  sensorNowdataMapper.selectSensorName();
+		List<SensorNowdataComb> sensorNowdata=  sensorNowdataMapper.selectSensorName(null);
 		List<String> nameList=new ArrayList<>();
 		List<Integer> countList=new ArrayList<>();
 		for (int i = 0; i < sensorNowdata.size(); i++) {

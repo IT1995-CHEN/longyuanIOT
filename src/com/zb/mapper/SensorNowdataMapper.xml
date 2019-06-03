@@ -111,5 +111,12 @@
         from db_sensornowdata n
         left join db_project p on n.pid = p.pid
         left join db_deviceinfo d on n.deviceNum = d.deviceNum) nd ,db_sensorinfo s WHERE nd.deviceName=s.sensid
+        <include refid='selectSensor'></include>
     </select>
+    <sql id="selectSensor">
+        <if test="deviceNum!=null and deviceNum != ''">
+            and  s.sensorName=#{deviceNum}
+        </if>
+        
+    </sql>
 </mapper>

@@ -15,4 +15,48 @@
        select * from db_controlrun 
         <include refid="getControlRun"></include>
     </select>
+    
+    <insert id="addControlRun" parameterType="ControlRun">
+        insert into db_controlrun(crid,deviceNum,kind,doStatus,operator,year,month,day,hour,min,second) 
+        values(null,#{deviceNum},#{kind},#{doStatus},#{operator},#{year},#{month},#{day},#{hour},#{min},#{second})
+    </insert>
+    
+    <resultMap type="com.zb.entity.ControlRunComb" id="searchControlRunMap">
+       <id column="crid" property="crid" />
+        <result column="kind" property="kind" />
+        <result column="doStatus" property="doStatus" />
+        <result column="operator" property="operator" />
+        <result column="createTime" property="createTime" />
+       <association property="deviceInfo" javaType="com.zb.entity.DeviceInfo">
+        <result column="did" property="did" />
+        <result column="deviceName" property="deviceName" />
+        <result column="deviceNum" property="deviceNum" />
+        <result column="deviceDes" property="deviceDes" />
+        <result column="dcreateTime" property="createTime" />
+       </association>
+    </resultMap>
+    
+    <sql id="searchControlRun">
+        <if test="deviceNum!=null and deviceNum != ''">
+            and deviceNum &gt;=#{deviceNum}
+        </if>
+        <if test="beginTime!=null and beginTime != ''">
+            and createTime &gt;=#{beginTime}
+        </if>
+        <if test="endTime!=null and endTime != ''">
+            and createTime &lt;=#{endTime}
+        </if>
+    </sql>
+    <select id="searchControlRun" resultMap="searchControlRunMap">
+         select * from (select r.crid,r.deviceNum,r.kind,r.doStatus,r.operator,DATE_FORMAT(concat(r.year,"-",r.month,"-",r.day," ",r.hour,":",r.min,":",r.second),'%Y-%m-%d %H:%i:%s')as createTime from db_controlrun r join db_deviceinfo d on r.deviceNum=d.deviceNum ) a,(select d.did,d.pid,d.deviceNum,s.sensorName as deviceName,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+from db_sensorinfo s,db_deviceinfo d WHERE s.sensid =d.deviceName) d WHERE a.deviceNum=d.deviceNum
+        <include refid="searchControlRun"></include>
+        limit #{index},#{size};
+    </select>
+    
+    <select id="countControlRun" resultType="int">
+      select count(*) from (select r.crid,r.deviceNum,r.kind,r.doStatus,r.operator,DATE_FORMAT(concat(r.year,"-",r.month,"-",r.day," ",r.hour,":",r.min,":",r.second),'%Y-%m-%d %H:%i:%s')as createTime from db_controlrun r join db_deviceinfo d on r.deviceNum=d.deviceNum ) a,(select d.did,d.pid,d.deviceNum,s.sensorName as deviceName,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
+from db_sensorinfo s,db_deviceinfo d WHERE s.sensid =d.deviceName) d WHERE a.deviceNum=d.deviceNum
+     <include refid="searchControlRun"></include>
+    </select>
 </mapper>
