@@ -13,11 +13,13 @@ public interface SensorNowdataMapper {
 
 	public boolean updateNowData(SensorNowdata sensorNow);
 
-	public SensorNowdata selectNowDataByNid(@Param("nid")Integer nid);
+	public SensorNowdata selectNowDataByDeviceNum(@Param("deviceNum")String deviceNum);
 	
 	public List<SensorNowdataComb> selectNowData(@Param("deviceNum")String deviceNum,@Param("pid")Integer pid);
 
 	public Integer pSensorCount(@Param("deviceName")String deviceName);
 	
 	public List<SensorNowdataComb> selectSensorName(@Param("deviceNum")String deviceNum);
+	
+	public Integer countSensorNowdata(@Param("deviceNum") String deviceNum);
 }

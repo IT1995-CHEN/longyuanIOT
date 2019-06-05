@@ -24,12 +24,8 @@ public class DeviceInfoBizImpl implements DeviceInfoBiz {
 	public boolean addDevice(DeviceInfo device){
 		try {
 			boolean flag = deviceInfoMapper.addDevice(device);
-			Control control = new Control();
-			control.setDeviceNum(device.getDeviceNum());
-			control.setOperationState("0");
-			control.setPid(device.getPid());	
-			boolean cflag = controlMapper.addControl(control);
-			return flag&&cflag;
+			
+			return flag;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

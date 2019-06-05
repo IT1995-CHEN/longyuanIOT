@@ -17,8 +17,8 @@
     </select>
     
     <insert id="addControlRun" parameterType="ControlRun">
-        insert into db_controlrun(crid,deviceNum,kind,doStatus,operator,year,month,day,hour,min,second) 
-        values(null,#{deviceNum},#{kind},#{doStatus},#{operator},#{year},#{month},#{day},#{hour},#{min},#{second})
+        insert into db_controlrun(crid,deviceNum,kind,num,doStatus,operator,year,month,day,hour,min,second) 
+        values(null,#{deviceNum},#{kind},#{num},#{doStatus},#{operator},#{year},#{month},#{day},#{hour},#{min},#{second})
     </insert>
     
     <resultMap type="com.zb.entity.ControlRunComb" id="searchControlRunMap">

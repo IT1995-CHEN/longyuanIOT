@@ -43,11 +43,10 @@
 		update db_sensornowdata
 		<set>
 			<if test="pid!=null and pid != ''">pid=#{pid},</if>
-			<if test="deviceNum!=null and deviceNum != ''">deviceNum=#{deviceNum},</if>
 			<if test="val!=null and val != ''">val=#{val},</if>
 			updateTime=(SELECT CURRENT_TIMESTAMP)
 		</set>
-		where nid = #{nid}
+		where deviceNum=#{deviceNum}
 	</update>
 
 	
@@ -61,8 +60,8 @@
 		
 	</sql>
 	
-	<select id="selectNowDataByNid" resultMap="sensorNowdataMap">
-		select nid,pid,deviceNum,val,DATE_FORMAT(updateTime,'%Y-%m-%d %H:%i:%s') as updateTime from db_sensornowdata where nid = #{nid}		
+	<select id="selectNowDataByDeviceNum" resultMap="sensorNowdataMap">
+		select nid,pid,deviceNum,val,DATE_FORMAT(updateTime,'%Y-%m-%d %H:%i:%s') as updateTime from db_sensornowdata where deviceNum = #{deviceNum}		
 	</select>
 	
 	<select id="selectNowData" resultMap="sensorNowdataCombMap">
@@ -119,4 +118,8 @@
         </if>
         
     </sql>
+    
+    <select id="countSensorNowdata" resultType="Int">
+        select count(*) from db_sensornowdata n where n.deviceNum=#{deviceNum} 
+    </select>
 </mapper>

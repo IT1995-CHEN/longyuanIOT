@@ -36,7 +36,7 @@ public class SensorNowdataBizImpl implements SensorNowdataBiz {
 	@Transactional
 	public boolean updateNowData(SensorNowdata sensorNow){
 		//在修改 当前数据前，把当前数据保存入历史数据表中
-		SensorNowdata sensorNowdata = sensorNowdataMapper.selectNowDataByNid(sensorNow.getNid());
+		SensorNowdata sensorNowdata = sensorNowdataMapper.selectNowDataByDeviceNum(sensorNow.getDeviceNum());
 		if(sensorNowdata!=null){
 			SensorHisdata sensorHisdata = new SensorHisdata();
 			sensorHisdata.setPid(sensorNowdata.getPid());

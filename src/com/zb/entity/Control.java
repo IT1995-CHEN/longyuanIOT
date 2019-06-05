@@ -2,12 +2,18 @@ package com.zb.entity;
 
 public class Control {
 
+	
 	private Integer cid;
 	private Integer pid;
 	private String deviceNum;
 	private String operationState;
 	private String updateTime;
-	
+	@Override
+	public String toString() {
+		return "Control [cid=" + cid + ", pid=" + pid + ", deviceNum="
+				+ deviceNum + ", operationState=" + operationState
+				+ ", updateTime=" + updateTime + "]";
+	}
 	public Integer getCid() {
 		return cid;
 	}

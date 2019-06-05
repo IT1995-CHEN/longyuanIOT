@@ -17,5 +17,7 @@ public interface ControlMapper {
 	public boolean deleteControlDeviceNum(@Param("deviceNum")String deviceNum);
 
 	public List<Control> selectControl(@Param("deviceNum")String deviceNum);
+	
+	public Integer countControlByDeviceNum(@Param("deviceNum")String deviceNum);
 
 }

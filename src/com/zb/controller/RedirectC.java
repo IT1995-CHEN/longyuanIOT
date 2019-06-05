@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.support.hsf.HSFJSONUtils;
 import com.zb.biz.ControlBiz;
 import com.zb.biz.ControlLogBiz;
 import com.zb.biz.DeviceInfoBiz;
@@ -22,6 +23,9 @@ import com.zb.entity.ControlLog;
 import com.zb.entity.ControlRun;
 import com.zb.entity.SensorInfo;
 import com.zb.entity.SensorNowdata;
+import com.zb.entity.Warn;
+import com.zb.mapper.ControlMapper;
+import com.zb.mapper.DeviceInfoMapper;
 import com.zb.mapper.SensorNowdataMapper;
 
 
@@ -39,33 +43,99 @@ public class RedirectC {
 	@Autowired
 	private SensorNowdataMapper sensorNowdataMapper;
 	
+	@Autowired
+	private DeviceInfoMapper deviceinfomapper;
+	@Autowired
+	private ControlMapper controlMapper;
+	
 	@ResponseBody
 	@RequestMapping(value="redirectControl")
-	public Map<String,String> Redirect(String gate,String device ,String op,String task,String run) {
-		gate="Reg0000001";
-		device="11,1,1";
-		op ="1,1";
-		task="";
+	public Map<String,String> Redirect(String gate,String device ,String op,String task,String run,String warn) {
+//		gate="Reg0000001";
+//		device="11,1,1";
+//		op ="1,1";
+//		task=""; 
+		System.out.println(gate);
+		System.out.println(device);
+		System.out.println(op);
+		System.out.println(task);
+		System.out.println(run);
+		String deviceNum = gate+","+device;
+		System.out.println(deviceNum);
 		
-		String deviceNum = gate+device;
+		if (gate==null || gate =="") {
+			Map<String, String> mapGate = new HashMap<>();
+			mapGate.put("ok", "请输入gate参数");
+			return mapGate;
+		}
+		if (device==null || device =="") {
+			Map<String, String> mapDevice = new HashMap<>();
+			mapDevice.put("ok", "请输入device参数");
+			return mapDevice; 
+		}
 		
 		if (op!=null&&!op.equals("")) {
 			String[] opstring= op.split(",");
 			switch (opstring[0]) {
 			case "0":
 				SensorNowdata sensorNowdata  = new SensorNowdata();
+				if (sensorNowdataMapper.countSensorNowdata(deviceNum)==0) {
+				
+					sensorNowdata.setDeviceNum(deviceNum);
+					sensorNowdata.setPid(deviceinfomapper.selectByDeviceNum(deviceNum).get(0).getPid());
+					sensorNowdata.setVal("0");	
+					sensorNowdataBiz.addNowData(sensorNowdata);
+				}
+				
 				sensorNowdata.setDeviceNum(deviceNum);
-				sensorNowdata.setPid(sensorNowdataMapper.selectSensorName(deviceNum).get(0).getProject().getPid());
+				sensorNowdata.setPid(deviceinfomapper.selectByDeviceNum(deviceNum).get(0).getPid());
 				sensorNowdata.setVal(opstring[1]);
+				System.out.println(opstring[1]);
 				sensorNowdataBiz.updateNowData(sensorNowdata);
 				break;
 			case "1":
+				if (controlMapper.countControlByDeviceNum(deviceNum)==0) {
+					Control control = new Control();
+					control.setDeviceNum(deviceNum);
+					control.setOperationState("0");
+					control.setPid(deviceinfomapper.selectByDeviceNum(deviceNum).get(0).getPid());	
+					controlBiz.addControl(control);
+				}
+				ControlLog controlLog = new ControlLog();
+				controlLog.setDeviceNum(deviceNum);
+				controlLog.setKind(deviceinfomapper.selectByDeviceNum(deviceNum).get(0).getDeviceName()+"0/1手动操作");
+				controlLog.setHisstate(opstring[1]);
+				controlLog.setOperationOrder("gate="+gate+","+"device="+device+","+"op="+op);
+				controlLog.setHisinfo(controlBiz.selectControl(deviceNum).get(0).toString());
+				controlLog.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLog);
 				Control control = new Control();
 				control.setDeviceNum(deviceNum);
-				control.setPid(sensorNowdataMapper.selectSensorName(deviceNum).get(0).getProject().getPid());
+				control.setPid(deviceinfomapper.selectByDeviceNum(deviceNum).get(0).getPid());
 				control.setOperationState(opstring[1]);
 				controlBiz.updateControl(control);
 				break;
+			case "2":
+//				if (sensorNowdataMapper.countSensorNowdata(deviceNum)==0) {
+//					Control control = new Control();
+//					control.setDeviceNum(deviceNum);
+//					control.setOperationState("0");
+////					control.setPid(sensorNowdataMapper.selectSensorName(deviceNum).get(0).getProject().getPid());	
+//					controlBiz.addControl(control);
+//				}
+				ControlLog controlLog2 = new ControlLog();
+				controlLog2.setDeviceNum(deviceNum);
+				controlLog2.setKind(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getDeviceName()+"0/1/2手动操作");
+				controlLog2.setHisstate(opstring[1]);
+				controlLog2.setOperationOrder("gate="+gate+","+"device="+device+","+"op="+op);
+				controlLog2.setHisinfo(controlBiz.selectControl(deviceNum).get(0).toString());
+				controlLog2.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLog2);
+				Control control2 = new Control();
+				control2.setDeviceNum(deviceNum);
+				control2.setPid(sensorNowdataMapper.selectSensorName(deviceNum).get(0).getProject().getPid());
+				control2.setOperationState(opstring[1]);
+				controlBiz.updateControl(control2);
 			default:
 				Map<String, String> mapOP = new HashMap<>();
 				mapOP.put("ok", "op参数输入错误");
@@ -74,13 +144,78 @@ public class RedirectC {
 		}
 		
 		if (task!=null&&!task.equals("")) {
-			
+			String[] tasksStrings= task.split(",");
+			switch (tasksStrings[0]) {
+			case "SewageConfig":
+				ControlLog controlLogS = new ControlLog();
+				controlLogS.setTaskNum(Integer.parseInt(tasksStrings[1]));
+				controlLogS.setBeginTime(tasksStrings[2]+":"+tasksStrings[3]);
+				controlLogS.setEndTime(tasksStrings[4]+":"+tasksStrings[5]);
+				controlLogS.setHisstate(tasksStrings[6]);
+				controlLogS.setDeviceNum(deviceNum);
+				controlLogS.setKind(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getDeviceName()+"定时排污");
+				controlLogS.setOperationOrder("gate="+gate+","+"device="+device+","+"task="+task);
+				controlLogS.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLogS);
+				break;
+			case "FeedTimerConfig":
+				ControlLog controlLogFt = new ControlLog();
+				controlLogFt.setTaskNum(Integer.parseInt(tasksStrings[1]));
+				controlLogFt.setBeginTime(tasksStrings[2]+":"+tasksStrings[3]);
+				controlLogFt.setEndTime(tasksStrings[4]+":"+tasksStrings[5]);
+				controlLogFt.setHisstate(tasksStrings[6]);
+				controlLogFt.setDeviceNum(deviceNum);
+				controlLogFt.setKind(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getDeviceName()+"定时投料");
+				controlLogFt.setOperationOrder("gate="+gate+","+"device="+device+","+"task="+task);
+				controlLogFt.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLogFt);
+				break;
+			case "FeedQualConfig":
+				ControlLog controlLogFq = new ControlLog();
+				controlLogFq.setTaskNum(Integer.parseInt(tasksStrings[1]));
+				controlLogFq.setBeginTime(tasksStrings[2]+":"+tasksStrings[3]);
+				controlLogFq.setQualConfig(tasksStrings[4]);
+				controlLogFq.setHisstate(tasksStrings[5]);
+				controlLogFq.setDeviceNum(deviceNum);
+				controlLogFq.setKind(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getDeviceName()+"定量投料");
+				controlLogFq.setOperationOrder("gate="+gate+","+"device="+device+","+"task="+task);
+				controlLogFq.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLogFq);
+				break;
+			case "DoTimerConfig":
+				ControlLog controlLogDt = new ControlLog();
+				controlLogDt.setTaskNum(Integer.parseInt(tasksStrings[1]));
+				controlLogDt.setBeginTime(tasksStrings[2]+":"+tasksStrings[3]);
+				controlLogDt.setEndTime(tasksStrings[4]+":"+tasksStrings[5]);
+				controlLogDt.setHisstate(tasksStrings[6]);
+				controlLogDt.setDeviceNum(deviceNum);
+				controlLogDt.setKind(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getDeviceName()+"定时爆气增氧");
+				controlLogDt.setOperationOrder("gate="+gate+","+"device="+device+","+"task="+task);
+				controlLogDt.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLogDt);
+				break;
+			case "DoThreshold":
+				ControlLog controlLogDts = new ControlLog();
+				controlLogDts.setMinVal(tasksStrings[1]);
+				controlLogDts.setMaxVal(tasksStrings[2]);
+				controlLogDts.setHisstate(tasksStrings[3]);
+				controlLogDts.setDeviceNum(deviceNum);
+				controlLogDts.setKind(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getDeviceName()+"阈值增氧");
+				controlLogDts.setOperationOrder("gate="+gate+","+"device="+device+","+"task="+task);
+				controlLogDts.setPerson("硬件回传");
+				controlLogBiz.addControlLog(controlLogDts);
+				break;
+			default:
+				Map<String, String> mapTask = new HashMap<>();
+				mapTask.put("ok", "task参数输入错误");
+				return mapTask;
+			}
 		}
 		if (run!=null&&!run.equals("")) {
 			String[] runstStrings = run.split(",");
 			ControlRun controlRun = new ControlRun();
 			controlRun.setDeviceNum(deviceNum);
-			controlRun.setKind(runstStrings[0]);
+			controlRun.setNum("gate="+gate+","+"device="+device+","+"run="+run);
 			controlRun.setDoStatus(runstStrings[1]);
 			controlRun.setOperator(runstStrings[2]);
 			controlRun.setYear(runstStrings[3]);
@@ -89,265 +224,47 @@ public class RedirectC {
 			controlRun.setHour(runstStrings[6]);
 			controlRun.setMin(runstStrings[7]);
 			controlRun.setSecond(runstStrings[8]);
+			switch (runstStrings[0]) {
+			case "sewage":
+				controlRun.setKind("排污");
+				break;
+			case "feed":
+				controlRun.setKind("投料");
+				break;
+			case "Do":
+				controlRun.setKind("增氧");
+				break;
+			default:
+				Map<String, String> mapRun = new HashMap<>();
+				mapRun.put("ok", "Run参数输入错误");
+				return mapRun;
+			}
 			}	
-		
-		
-		
-		
-		
-		
-		
-		
-		return null;
+		if (warn!=null&&!warn.equals("")) {
+			String[] warnstStrings = warn.split(",");
+			Warn warns =new Warn();
+			switch (warnstStrings[0]) {
+			case "atwarn":
+				warns.setDeviceNum(deviceNum);
+				warns.setPid(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getProject().getPid());
+				warns.setWarnInfo("电力报警："+warnstStrings[1]);
+				break;
+			case "atAlarm":
+				warns.setDeviceNum(deviceNum);
+				warns.setPid(deviceinfomapper.searchDevice("", "", deviceNum, "", 1, 1).get(0).getProject().getPid());
+				warns.setWarnInfo("气体管路压力报警:"+warnstStrings[1]);
+				break;
+			
+			default:
+				Map<String, String> mapRun = new HashMap<>();
+				mapRun.put("ok", "warn参数输入错误");
+				return mapRun;
+			}
+			}	
+		Map<String, String> mapSuccess = new HashMap<>();
+		mapSuccess.put("ok", "成功获取参数");
+		return mapSuccess;
 	
-
-//		Map<String,String> map1=new HashMap<>();
-//		map1.put("ok", "控制表联动出现异常");
-//		
-//		
-//		//操作命令和操作历史
-//		String[] operation = op.split("=");
-//		for (int i = 0; i < operation.length; i++) {
-//			System.out.println(operation[i]);
-//		}
-//		//操作命令
-//		System.out.println(operation[0]);
-//		//操作命令最后一位（开关状态）
-//		String nowState = operation[1].substring(operation[1].length()-1, operation[1].length());
-//		System.out.println(operation[1].substring(operation[1].length()-1, operation[1].length()));
-//	
-//		//查询当前操作的历史状态值
-//		List<Control> nclist= controlBiz.selectControl(gate);
-//		String hisDeviceNum= nclist.get(0).getDeviceNum();
-//		System.out.println(hisDeviceNum);
-//		String hisOperationState=nclist.get(0).getOperationState();
-//		System.out.println(hisOperationState);
-//				
-////		//历史控制表中数据插入
-////		ControlLog controlLog = new ControlLog();
-////		controlLog.setHisinfo(op);
-////		controlLog.setDeviceNum(gate);
-///*		controlLog*/
-//		//操作指令判断存入历史控制表中的数据格式
-//		switch (operation[0]) {
-//		//手动投料
-//		case "atFeedManual":
-//			System.out.println("atFeedManual1");
-//			//历史控制表中数据插入
-//			ControlLog controlLog = new ControlLog();
-//			controlLog.setHisinfo(op);
-//			controlLog.setDeviceNum(gate);
-//			controlLog.setHisstate(nowState);
-//			controlLog.setKind("手动投料开关");
-//			controlLog.setPerson("硬件操作");
-//			controlLog.setOperationOrder(operation[0]);
-//			controlLog.setOperationOrder(operation[0]);
-//			controlLogBiz.addControlLog(controlLog);
-//			//实时表中数据修改
-//			Control control = new Control();
-//			control.setDeviceNum(gate);
-//			control.setOperationState(nowState);
-//			boolean cflag=controlBiz.updateControl(control);
-//			if (cflag==false) {
-//				return map1;
-//			}
-//			break;
-//		//定量投料总启动
-//		case "atFeedQualEn":
-//			System.out.println("atFeedQualEn2");
-//			//历史控制表中数据插入
-//			ControlLog controlLog1 = new ControlLog();
-//			controlLog1.setHisinfo(op);
-//			controlLog1.setDeviceNum(gate);
-//			controlLog1.setHisstate(nowState);
-//			controlLog1.setKind("定量投料总启动开关");
-//			controlLog1.setPerson("硬件操作");
-//			controlLog1.setOperationOrder(operation[0]);
-//			controlLogBiz.addControlLog(controlLog1);
-//			//实时表中数据修改
-//			Control control1 = new Control();
-//			control1.setDeviceNum(gate);
-//			control1.setOperationState(nowState);
-//			boolean cflag1=controlBiz.updateControl(control1);
-//			if (cflag1==false) {
-//				return map1;
-//			}
-//			break;
-//		//定时投料总启动
-//		case "atFeedTimerEn":
-//			System.out.println("atFeedTimerEn3");
-//			//历史控制表中数据插入
-//			ControlLog controlLog2 = new ControlLog();
-//			controlLog2.setHisinfo(op);
-//			controlLog2.setDeviceNum(gate);
-//			controlLog2.setHisstate(nowState);
-//			controlLog2.setKind("定时投料总启动开关");
-//			controlLog2.setPerson("硬件操作");
-//			controlLog2.setOperationOrder(operation[0]);
-//			controlLogBiz.addControlLog(controlLog2);
-//			//实时表中数据修改
-//			Control control2 = new Control();
-//			control2.setDeviceNum(gate);
-//			control2.setOperationState(nowState);
-//			boolean cflag2=controlBiz.updateControl(control2);
-//			if (cflag2==false) {
-//				return map1;
-//			}
-//			break;
-//			
-//		//定量投料任务配置
-//		case "atFeedQualConfig":
-//			System.out.println("atFeedQualConfig4");
-//			String[] valueStrings1 = operation[1].split(",");
-//			for (int i = 0; i < valueStrings1.length; i++) {
-//				System.out.println(valueStrings1[i]);
-//			}
-//			
-//			//历史控制表中数据插入
-//			ControlLog controlLog3 = new ControlLog();
-//			controlLog3.setHisinfo(op);
-//			controlLog3.setDeviceNum(gate);
-//			controlLog3.setHisstate(nowState);
-//			controlLog3.setKind("定量投料任务配置");
-//			controlLog3.setPerson("硬件操作");
-//			controlLog3.setOperationOrder(operation[0]);
-//			controlLog3.setTaskNum(Integer.parseInt(valueStrings1[0]));
-//			String beginTimeString1 = valueStrings1[1]+":"+valueStrings1[2];
-//			controlLog3.setBeginTime(beginTimeString1);
-//			controlLog3.setQualConfig(valueStrings1[3]);
-//			controlLogBiz.addControlLog(controlLog3);
-//			break;
-//			
-//		case "atFeedTimerConfig":
-//			System.out.println("atFeedTimerConfig5");
-//			String[] valueStrings2 = operation[1].split(",");
-//			for (int i = 0; i < valueStrings2.length; i++) {
-//				System.out.println(valueStrings2[i]);
-//			}
-//			
-//			//历史控制表中数据插入
-//			ControlLog controlLog4 = new ControlLog();
-//			controlLog4.setHisinfo(op);
-//			controlLog4.setDeviceNum(gate);
-//			controlLog4.setHisstate(nowState);
-//			controlLog4.setKind("定时投料任务配置");
-//			controlLog4.setPerson("硬件操作");
-//			controlLog4.setOperationOrder(operation[0]);
-//			controlLog4.setTaskNum(Integer.parseInt(valueStrings2[0]));
-//			String beginTimeString2 = valueStrings2[1]+":"+valueStrings2[2];
-//			controlLog4.setBeginTime(beginTimeString2);
-//			controlLog4.setDuration(valueStrings2[3]);
-//			controlLogBiz.addControlLog(controlLog4);
-//			break;
-//			
-//			case "atFeedRun":
-//			System.out.println("atFeedRun6");
-//			
-//			break;
-//			
-//			
-//		//手动排污
-//		case "atSewageManual":
-//			System.out.println("atSewageManual1");
-//			break;
-//		//自动排污
-//		case "atSewageAuto":
-//			System.out.println("atSewageAuto2");
-//			break;
-//		//排污任务设置
-//		case "atSewageConfig":
-//			System.out.println("atSewageConfig3");
-//			break;
-//		//运行状态上传
-//		case "atSewageRun":
-//			System.out.println("atSewageRun4");
-//			break;
-//			
-//			
-//		//推水增氧手动控制
-//		case "DoSufaceManual":
-//			System.out.println("DoSufaceManual1");
-//			break;
-//		//爆气增氧手动控制
-//		case "atDoGasManual":
-//			System.out.println("atDoGasManual2");
-//			break;
-//		//阈值增氧
-//		case "atDoThreshold":
-//			System.out.println("atDoThreshold3"); 
-//			break;
-//		//定时增氧模式配置
-//		case "atDoTimerEn":
-//			System.out.println("atDoTimerEn4");
-//		//定时增氧任务配置
-//		case "atDoTimerConfig":
-//			System.out.println("atDoTimerConfig5");
-//			break;
-//		//除外塘增氧运行状态上传
-//		case "atDoRun":
-//			System.out.println("atDoRun6");
-//			
-//			
-//		//外塘增氧手动
-//		case "atDoOutManual":
-//			System.out.println("atDoOutManual1");
-//			break;
-//		//外塘增氧运行状态上传
-//		case "atDoOutRun":
-//			System.out.println("atDoOutRun2");
-//			break;
-//		
-//
-//		}
-//		
-//	//实时操作指令放入数据库
-//		
-//		Map<String,String> map=new HashMap<>();
-//		map.put("ok", "获取成功");
-//		return map;
-//
-//
-//	}
-//	
-//	
-//	@ResponseBody
-//	@RequestMapping(value="redirectSensor")
-//	public Map<String, String> redirectSensor(String gate,String op){
-//		//操作命令和操作历史
-//				String[] operation = op.split("=");
-//				for (int i = 0; i < operation.length; i++) {
-//					System.out.println(operation[i]);
-//				}
-//				//操作命令
-//				System.out.println(operation[0]);
-//				
-//		switch (operation[0]) {
-//		
-//		//报警系统信息上传
-//		//电力报警信息上传
-//		case "atWarn":
-//			System.out.println("atWarn1");
-//			break;
-//		//气体管路压力异常报警信息上传
-//		case "atAlarm":
-//			System.out.println("atAlarm2");
-//			break;
-//		//气象信息
-//		case "atweather":
-//			System.out.println("atweather");
-//			break;
-//		
-//			
-//		//传感器数据信息上传
-//		case "atsensor":
-//			System.out.println("atsensor");
-//			break;
-//	}
-//		//报警、传感器、气象数据获取成功返回
-//
-//		Map<String,String> map=new HashMap<>();
-//		map.put("ok", "获取成功");
-//		return map;
-}
+	}
 		
 }

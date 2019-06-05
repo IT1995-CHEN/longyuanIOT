@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.SensorInfoBiz;
@@ -17,7 +18,7 @@ public class SensorInfoC {
 	private SensorInfoBiz sensorInfoBiz;
 	
 	@ResponseBody
-	@RequestMapping(value="/selectAllSensorName")
+	@RequestMapping(value="/selectAllSensorName",method=RequestMethod.GET)
 	public List<SensorInfo> selectAllSensorName(){
 		return sensorInfoBiz.selectAllSensorName();
 	}

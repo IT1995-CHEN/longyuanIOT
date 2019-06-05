@@ -21,4 +21,5 @@ public interface DeviceInfoMapper {
 	
 	public List<DeviceInfo> selectDevice(@Param("did")Integer did,@Param("pid")Integer pid,@Param("projectName")String projectName,@Param("deviceName")String deviceName,@Param("deviceNum")String deviceNum,@Param("deviceDes")String deviceDes);
 
+	public List<DeviceInfo> selectByDeviceNum(@Param("deviceNum") String deviceNum);
 }

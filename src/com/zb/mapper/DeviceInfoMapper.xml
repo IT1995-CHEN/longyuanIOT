@@ -113,4 +113,11 @@
         <include refid="getDevice"></include>
         
     </select>
+    
+    <select id="selectByDeviceNum" resultMap="selectDeviceMap">
+        select d.did,d.pid,s.sensorName as deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as createTime  from db_deviceinfo d,db_sensorinfo s 
+       where d.deviceName=s.sensid and deviceNum=#{deviceNum}
+        
+        
+    </select>
 </mapper>
