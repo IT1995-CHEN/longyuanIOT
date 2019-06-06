@@ -6,6 +6,7 @@ public class Video {
 	private Integer pid;
 	private String monitorName;
 	private String monitorAdd;
+	private String monitorWeChat;
 	private String monitorArea;
 	private String createTime;
 	
@@ -33,7 +34,12 @@ public class Video {
 	public void setMonitorAdd(String monitorAdd) {
 		this.monitorAdd = monitorAdd;
 	}
-	
+	public String getMonitorWeChat() {
+		return monitorWeChat;
+	}
+	public void setMonitorWeChat(String monitorWeChat) {
+		this.monitorWeChat = monitorWeChat;
+	}
 	public String getMonitorArea() {
 		return monitorArea;
 	}
