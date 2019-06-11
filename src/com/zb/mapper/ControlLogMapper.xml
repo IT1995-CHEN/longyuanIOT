@@ -94,29 +94,13 @@
 		limit #{index} ,#{size}
 	</select>
 	
-	<resultMap type="com.zb.entity.ControlLog" id="controlMap">
-        <id column="lid" property="lid" />
-        <result column="hisstate" property="hisstate" />
-        <result column="hisinfo" property="hisinfo" />
-        <result column="taskNum" property="taskNum" />
-        <result column="operationOrder" property="operationOrder" />
-        <result column="person" property="person" />
-        <result column="kind" property="kind" />
-        <result column="qualConfig" property="qualConfig" />
-        <result column="minVal" property="minVal" />
-        <result column="maxVal" property="maxVal" />
-        <result column="beginTime" property="beginTime" />
-        <result column="endTime" property="endTime" />
-        <result column="duration" property="duration" />
-        <result column="createtime" property="createtime" />
-
-    </resultMap>
 	
-	
-	<select id="selectControlComb" resultMap="controlMap">
+	<select id="selectControlComb" resultMap="controlLogMap">
 	select l.lid,l.deviceNum,l.hisstate,l.hisinfo,l.taskNum,l.operationOrder,l.person,l.kind,l.qualConfig,l.minVal,l.maxVal,
-        l.beginTime,l.endTime,l.duration,DATE_FORMAT(l.createtime,'%Y-%m-%d %H:%i:%s') as createtime
+        l.beginTime,l.endTime,l.duration,DATE_FORMAT(l.createtime,'%Y-%m-%d %H:%i:%s') as lcreatetime, 
+        d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
         from db_controllog l
+        left join db_deviceinfo d on l.deviceNum = d.deviceNum
          <where>
         <if test="deviceNum!=null and deviceNum != ''">
             and l.deviceNum=#{deviceNum}
