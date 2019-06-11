@@ -50,9 +50,14 @@ public class RedirectSC {
 	@ResponseBody
 	@RequestMapping(value="/redirectSControl")
 	public Map<String, String> redirectSControl(String deviceNum,String op,String task,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		if (deviceNum==null||deviceNum.equals("")) {
+			Map<String, String> mapd = new HashMap<>();
+			mapd.put("ok", "请输入deviceNum");
+			return mapd;
+		}
 		boolean b =deviceNum.contains(",");
 		System.err.println(deviceNum.length());
-		if (deviceNum==null||deviceNum.equals("")||deviceNum.length()<11||b==false) {
+		if (deviceNum.length()<11||b==false) {
 			Map<String, String> mapd = new HashMap<>();
 			mapd.put("ok", "deviceNum参数错误");
 			return mapd;

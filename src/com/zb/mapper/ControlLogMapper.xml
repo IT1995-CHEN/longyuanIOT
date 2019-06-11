@@ -93,4 +93,38 @@
 		order by lid desc
 		limit #{index} ,#{size}
 	</select>
+	
+	<resultMap type="com.zb.entity.ControlLog" id="controlMap">
+        <id column="lid" property="lid" />
+        <result column="hisstate" property="hisstate" />
+        <result column="hisinfo" property="hisinfo" />
+        <result column="taskNum" property="taskNum" />
+        <result column="operationOrder" property="operationOrder" />
+        <result column="person" property="person" />
+        <result column="kind" property="kind" />
+        <result column="qualConfig" property="qualConfig" />
+        <result column="minVal" property="minVal" />
+        <result column="maxVal" property="maxVal" />
+        <result column="beginTime" property="beginTime" />
+        <result column="endTime" property="endTime" />
+        <result column="duration" property="duration" />
+        <result column="createtime" property="createtime" />
+
+    </resultMap>
+	
+	
+	<select id="selectControlComb" resultMap="controlMap">
+	select l.lid,l.deviceNum,l.hisstate,l.hisinfo,l.taskNum,l.operationOrder,l.person,l.kind,l.qualConfig,l.minVal,l.maxVal,
+        l.beginTime,l.endTime,l.duration,DATE_FORMAT(l.createtime,'%Y-%m-%d %H:%i:%s') as createtime
+        from db_controllog l
+         <where>
+        <if test="deviceNum!=null and deviceNum != ''">
+            and l.deviceNum=#{deviceNum}
+        </if>
+        <if test="taskNum!=null and taskNum != ''">
+            and l.taskNum=#{taskNum}
+        </if>
+        </where>
+       order by lid desc
+	</select>
 </mapper>

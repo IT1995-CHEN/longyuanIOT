@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.ControlLogBiz;
+import com.zb.entity.ControlComb;
 import com.zb.entity.ControlLog;
 import com.zb.entity.ControlLogComb;
 import com.zb.util.PageUtil;
@@ -52,4 +53,11 @@ public class ControlLogC {
 		return pageUtil;
 	}
 
+	@ResponseBody
+	@RequestMapping("/selectControlComb")
+	public ControlComb selectControlComb(String deviceNum){
+		
+		return controlLogBiz.selectControlComb(deviceNum);
+		
+	}
 }

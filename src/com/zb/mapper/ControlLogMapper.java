@@ -21,5 +21,6 @@ public interface ControlLogMapper {
 			@Param("kind")String kind,@Param("qualConfig")String qualConfig,@Param("minVal")String minVal,@Param("maxVal")String maxVal,
 			@Param("beginTime")String beginTime,@Param("endTime")String endTime,@Param("duration")String duration,@Param("index")Integer index,@Param("size")Integer size);
 	
+	public List<ControlLog> selectControlComb(@Param("deviceNum")String deviceNum,@Param("taskNum")Integer taskNum);
 
 }
