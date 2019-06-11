@@ -65,7 +65,7 @@ public class ControlLogBizImpl implements ControlLogBiz {
 		controlLogL2.add(controlLog2);
 		//任务3
 		List<ControlLogComb> controlLogL3= new ArrayList<>();
-		ControlLogComb controlLog3 = controlLogMapper.selectControlComb(deviceNum,2).get(0);
+		ControlLogComb controlLog3 = controlLogMapper.selectControlComb(deviceNum,3).get(0);
 		controlLogL3.add(controlLog3);
 		
 		controlComb.setTask1(controlLogL1);
