@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zb.biz.ControlBiz;
 import com.zb.entity.Control;
+import com.zb.entity.ControlDev;
 import com.zb.entity.ControlLog;
 import com.zb.entity.SensorHisdata;
 import com.zb.mapper.ControlLogMapper;
@@ -62,6 +63,13 @@ public class ControlBizImpl implements ControlBiz {
 		List<Control> controls = controlMapper.selectControl(deviceNum);
 		
 		return controls;
+	}
+
+	@Override
+	public List<ControlDev> selectControlDev(String deviceNum,Integer pid) {
+		// TODO Auto-generated method stub
+		List<ControlDev> controlDevs=controlMapper.selectControlDev(deviceNum,pid);
+		return controlDevs;
 	}
 
 }

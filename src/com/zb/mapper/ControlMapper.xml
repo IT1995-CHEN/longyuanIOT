@@ -48,4 +48,33 @@
 	<select id="countControlByDeviceNum" resultType="Int">
 	select count(*) from db_control WHERE deviceNum=#{deviceNum}
 	</select>
+	
+	   <resultMap type="com.zb.entity.ControlDev" id="controlDevMap">
+        <id column="cid" property="cid" />
+        <result column="pid" property="pid" />
+        <result column="operationState" property="operationState" />
+        <result column="updateTime" property="updateTime" />
+        <association property="deviceInfo" javaType="com.zb.entity.DeviceInfo">
+        <result column="did" property="did" />
+        <result column="pid" property="pid" />
+        <result column="deviceName" property="deviceName" />
+        <result column="deviceNum" property="deviceNum" />
+        <result column="deviceDes" property="deviceDes" />
+        <result column="createTime" property="createTime" />
+       </association>
+    </resultMap>
+    <sql id="getControlDev">
+    <if test="deviceNum!=null and deviceNum != ''">
+            and c.deviceNum=#{deviceNum}
+        </if>
+        <if test="pid!=null and pid != ''">
+            and c.pid=#{pid}
+        </if>
+    </sql>
+	<select id="selectControlDev" resultMap="controlDevMap">
+    select *
+        from db_control  c , ( select d.did,d.pid,s.sensorName as deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as createTime  from db_deviceinfo d,db_sensorinfo s 
+       where d.deviceName=s.sensid ) d  where c.deviceNum = d.deviceNum 
+        <include refid="getControlDev"></include>
+    </select>
 </mapper>

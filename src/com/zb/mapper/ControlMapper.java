@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zb.entity.Control;
+import com.zb.entity.ControlDev;
 
 public interface ControlMapper {
 
@@ -19,5 +20,7 @@ public interface ControlMapper {
 	public List<Control> selectControl(@Param("deviceNum")String deviceNum);
 	
 	public Integer countControlByDeviceNum(@Param("deviceNum")String deviceNum);
+	
+	public List<ControlDev> selectControlDev(@Param("deviceNum")String deviceNum,@Param("pid")Integer pid);
 
 }

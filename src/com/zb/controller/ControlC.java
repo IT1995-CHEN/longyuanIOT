@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zb.biz.ControlBiz;
 import com.zb.entity.Control;
+import com.zb.entity.ControlDev;
 
 @Controller
 public class ControlC {
@@ -81,6 +82,15 @@ public class ControlC {
 		List<Control> controls = controlBiz.selectControl(deviceNum);
 		
 		return controls;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/selectControlDev")
+	public List<ControlDev> selectControlDev(String deviceNum,Integer pid) {
+		List<ControlDev> controlDevs = controlBiz.selectControlDev(deviceNum,pid);
+		
+		return controlDevs;
 		
 	}
 }
