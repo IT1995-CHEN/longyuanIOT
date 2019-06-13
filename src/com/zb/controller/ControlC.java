@@ -87,8 +87,8 @@ public class ControlC {
 	
 	@ResponseBody
 	@RequestMapping("/selectControlDev")
-	public List<ControlDev> selectControlDev(String deviceNum,Integer pid) {
-		List<ControlDev> controlDevs = controlBiz.selectControlDev(deviceNum,pid);
+	public List<ControlDev> selectControlDev(String deviceNum,Integer pid,String deviceName) {
+		List<ControlDev> controlDevs = controlBiz.selectControlDev(deviceNum,pid,deviceName);
 		
 		return controlDevs;
 		

@@ -215,6 +215,24 @@ public class RedirectSC {
 				controlLogDt.setPerson("软件操作");
 				controlLogBiz.addControlLog(controlLogDt);
 				break;
+				case "PullTimerConfig":
+				
+				if (tasksStrings.length<7) {
+					Map<String, String> mapTask4 = new HashMap<>();
+					mapTask4.put("ok", "task参数中PullTimerConfig参数输入错误");
+					return mapTask4;
+				}
+				ControlLog controlLogPt = new ControlLog();
+				controlLogPt.setTaskNum(Integer.parseInt(tasksStrings[1]));
+				controlLogPt.setBeginTime(tasksStrings[2]+":"+tasksStrings[3]);
+				controlLogPt.setEndTime(tasksStrings[4]+":"+tasksStrings[5]);
+				controlLogPt.setHisstate(tasksStrings[6]);
+				controlLogPt.setDeviceNum(deviceNum);
+				controlLogPt.setKind(deviceinfomapper.selectByDeviceNum(deviceNum).get(0).getDeviceName()+"定时表面增氧");
+				controlLogPt.setOperationOrder("gate="+gate+","+"device="+device+","+"task="+task);
+				controlLogPt.setPerson("软件操作");
+				controlLogBiz.addControlLog(controlLogPt);
+				break;
 			case "DoThreshold":
 				if (tasksStrings.length<4) {
 					Map<String, String> mapTask5= new HashMap<>();

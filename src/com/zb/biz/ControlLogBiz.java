@@ -17,4 +17,6 @@ public interface ControlLogBiz {
 			String beginTime,String endTime,String duration,PageUtil<ControlLogComb> page);
 		
 	public ControlComb selectControlComb(String deviceNum);
+	
+	public List<ControlLog> selectOneControlLog(String deviceNum);
 }

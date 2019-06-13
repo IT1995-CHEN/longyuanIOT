@@ -1,6 +1,7 @@
 package com.zb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,16 @@ public class ControlLogC {
 	@ResponseBody
 	@RequestMapping("/selectControlComb")
 	public ControlComb selectControlComb(String deviceNum){
-		
+		System.out.println(deviceNum);
 		return controlLogBiz.selectControlComb(deviceNum);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/selectOneControlLog")
+	public List<ControlLog> selectOneControlLog(String deviceNum){
+		System.out.println(deviceNum);
+		return controlLogBiz.selectOneControlLog(deviceNum);
 		
 	}
 }

@@ -21,6 +21,6 @@ public interface ControlMapper {
 	
 	public Integer countControlByDeviceNum(@Param("deviceNum")String deviceNum);
 	
-	public List<ControlDev> selectControlDev(@Param("deviceNum")String deviceNum,@Param("pid")Integer pid);
+	public List<ControlDev> selectControlDev(@Param("deviceNum")String deviceNum,@Param("pid")Integer pid,@Param("deviceName")String deviceName);
 
 }

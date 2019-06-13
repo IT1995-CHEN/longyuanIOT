@@ -23,4 +23,5 @@ public interface ControlLogMapper {
 	
 	public List<ControlLogComb> selectControlComb(@Param("deviceNum")String deviceNum,@Param("taskNum")Integer taskNum);
 
+	public List<ControlLog> selectControlLog(@Param("deviceNum")String deviceNum);
 }

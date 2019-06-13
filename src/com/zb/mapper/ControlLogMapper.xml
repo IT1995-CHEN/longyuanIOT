@@ -111,4 +111,18 @@
         </where>
        order by lid desc
 	</select>
+	
+	<resultMap type="com.zb.entity.ControlLog" id="LogMap">
+      
+    </resultMap>
+    <sql id="selectControlLog">
+    <if test="deviceNum!=null and deviceNum != ''">
+            and l.deviceNum=#{deviceNum}
+        </if>
+    </sql>
+	<select id="selectControlLog" resultMap="LogMap">
+	       SELECT * from db_controllog l where 1=1
+     <include refid="selectControlLog"></include>
+        ORDER BY lid DESC
+	</select>
 </mapper>

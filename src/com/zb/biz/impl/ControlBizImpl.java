@@ -66,9 +66,9 @@ public class ControlBizImpl implements ControlBiz {
 	}
 
 	@Override
-	public List<ControlDev> selectControlDev(String deviceNum,Integer pid) {
+	public List<ControlDev> selectControlDev(String deviceNum,Integer pid ,String deviceName) {
 		// TODO Auto-generated method stub
-		List<ControlDev> controlDevs=controlMapper.selectControlDev(deviceNum,pid);
+		List<ControlDev> controlDevs=controlMapper.selectControlDev(deviceNum,pid,deviceName);
 		return controlDevs;
 	}
 

@@ -17,5 +17,5 @@ public interface ControlBiz {
 	
 	public List<Control> selectControl(String deviceNum);
 	
-	public List<ControlDev> selectControlDev(String deviceNum,Integer pid);
+	public List<ControlDev> selectControlDev(String deviceNum,Integer pid,String deviceName);
 }
