@@ -8,6 +8,6 @@ public interface WarnBiz {
 
 	public boolean addWarn(Warn warn);
 
-	public PageUtil<WarnComb> searchWarn(String deviceNum,Integer pid,PageUtil<WarnComb> page,String warnInfo);
+	public PageUtil<WarnComb> searchWarn(String deviceNum,String deviceDes,Integer pid,PageUtil<WarnComb> page,String warnInfo);
 	
 }

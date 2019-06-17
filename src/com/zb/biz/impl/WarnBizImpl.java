@@ -24,11 +24,11 @@ public class WarnBizImpl implements WarnBiz {
 		return flag;
 	}
 
-	public PageUtil<WarnComb> searchWarn(String deviceNum,Integer pid,PageUtil<WarnComb> page,String warnInfo){
-		List<WarnComb> warnCombs = warnMapper.searchWarn(deviceNum, pid, (page.getIndex() - 1) * page.getSize(), page.getSize(), warnInfo);
+	public PageUtil<WarnComb> searchWarn(String deviceNum,String deviceDes,Integer pid,PageUtil<WarnComb> page,String warnInfo){
+		List<WarnComb> warnCombs = warnMapper.searchWarn(deviceNum,deviceDes, pid, (page.getIndex() - 1) * page.getSize(), page.getSize(), warnInfo);
 		page.setPage(warnCombs);
 		
-		int count = warnMapper.searchCount(deviceNum, pid, warnInfo);
+		int count = warnMapper.searchCount(deviceNum,deviceDes, pid, warnInfo);
 		page.setCount(count);
 		
 		return page;

@@ -35,7 +35,7 @@ public class WarnC {
 
 	@ResponseBody
 	@RequestMapping("/searchWarn")
-	public PageUtil<WarnComb> searchWarn(Integer index,Integer size,Integer pid,String deviceNum,String warnInfo){
+	public PageUtil<WarnComb> searchWarn(Integer index,Integer size,Integer pid,String deviceNum,String deviceDes,String warnInfo){
 		PageUtil<WarnComb> page = new PageUtil<WarnComb>();
 		if(index!=null&&!index.equals("")) {
 			page.setIndex(index);
@@ -43,7 +43,7 @@ public class WarnC {
 		if(size!=null&&!size.equals("")) {
 			page.setSize(size);
 		}
-		PageUtil<WarnComb> pageUtil = warnBiz.searchWarn(deviceNum, pid, page, warnInfo);
+		PageUtil<WarnComb> pageUtil = warnBiz.searchWarn(deviceNum,deviceDes, pid, page, warnInfo);
 		return pageUtil;
 	}
 }

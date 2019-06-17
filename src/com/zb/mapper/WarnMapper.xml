@@ -18,6 +18,7 @@
 		</association>
 		<association property="deviceInfo" javaType="com.zb.entity.DeviceInfo" column="deviceNum">
 			<id column="did" property="did" />
+			<result column="dpid" property="pid" />
 			<result column="deviceName" property="deviceName" />
 			<result column="deviceNum" property="deviceNum" />
 			<result column="deviceDes" property="deviceDes" />
@@ -36,12 +37,17 @@
 		<if test="deviceNum!=null and deviceNum != ''">
 			and d.deviceNum=#{deviceNum}
 		</if>
+		<if test="deviceDes!=null and deviceDes != ''">
+            and d.deviceDes like concat('%',#{deviceDes},'%')
+        </if>
+		
 		<if test="pid!=null and pid != ''">
 			and p.pid=#{pid}
 		</if>
 		<if test="warnInfo!=null and warnInfo != ''">
 			and w.warnInfo=#{warnInfo}
 		</if>
+		
 	</sql>
 	
 	<select id="searchCount" resultType="Integer">
@@ -53,12 +59,10 @@
 	</select>
 	
 	<select id="searchWarn" resultMap="warnCombMap">
-		select w.wid,w.pid,w.deviceNum,w.warnInfo,DATE_FORMAT(w.createTime,'%Y-%m-%d %H:%i:%s') as wcreateTime,
-		p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
-		d.did,d.pid,d.deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime
-		from db_warn w
-		left join db_project p on w.pid = p.pid
-		left join db_deviceinfo d on w.deviceNum = d.deviceNum where 1 = 1
+	select w.wid,w.warnInfo,DATE_FORMAT(w.createTime,'%Y-%m-%d %H:%i:%s') as wcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.pid as dpid,s.sensorName as deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime 
+        from db_warn w, db_project p, db_deviceinfo d ,db_sensorinfo s where  d.deviceName=s.sensid and  w.pid = p.pid and w.deviceNum = d.deviceNum
 		<include refid="getWarn"></include>
 		order by wid desc
 		limit #{index} ,#{size}
