@@ -55,7 +55,7 @@
 			and d.deviceNum=#{deviceNum}
 		</if>
 		<if test="pid!=null and pid != ''">
-			and p.pid=#{pid}
+			and pid=#{pid}
 		</if>
 		
 	</sql>

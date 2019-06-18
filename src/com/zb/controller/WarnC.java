@@ -1,6 +1,7 @@
 package com.zb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,4 +47,29 @@ public class WarnC {
 		PageUtil<WarnComb> pageUtil = warnBiz.searchWarn(deviceNum,deviceDes, pid, page, warnInfo);
 		return pageUtil;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/selectWarn")
+	public List<WarnComb> selectWarn(String deviceNum,String deviceDes){
+		PageUtil<WarnComb> page = new PageUtil<WarnComb>();
+		
+		List<WarnComb> wlist = warnBiz.selectWarn(deviceNum,deviceDes);
+		return wlist;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/selectDevWarn")
+	public List<WarnComb> selectDevWarn(Integer pid,String deviceDes){
+		PageUtil<WarnComb> page = new PageUtil<WarnComb>();
+		
+		List<WarnComb> wlist = warnBiz.selectDevWarn(pid,deviceDes);
+		return wlist;
+	}
+	@ResponseBody
+	@RequestMapping("/selectDesWarn")
+	public List<String> selectDesWarn(Integer pid){
+		List<String> wlist = warnBiz.selectDesWarn(pid);
+		return wlist;
+	}
+	
 }

@@ -117,6 +117,7 @@ public class ControlLogBizImpl implements ControlLogBiz {
 			controlLog.setDeviceNum(deviceNum);
 			controlLog.setMinVal("0");
 			controlLog.setMaxVal("0");
+			controlLog.setHisstate("0");
 			controlLogs.add(controlLog);
 			return controlLogs;
 		}

@@ -68,7 +68,7 @@ public class RedirectSC {
 		System.out.println(gate);
 		String device=deviceNum.substring(11, deviceNum.length());
 		System.out.println(device);
-		String url="http://"+request.getServerName()+":8000?"+"gate="+gate+"&device="+device+"&";
+		String url="http://120.55.69.237:8087?"+"gate="+gate+"&device="+device+"&";
 		
 		if (op!=null&&!op.equals("")) {
 			if (op.length()<3) {
@@ -128,8 +128,10 @@ public class RedirectSC {
 				return mapOP;
 			}
 			String urlOp=url+"op="+op;
+			System.out.println(urlOp);
 			try {
-				request.getRequestDispatcher(url);
+				response.sendRedirect(urlOp);
+//				request.getRequestDispatcher(url);
 				Map<String, String> map1 =new HashMap<>();
 				map1.put("ok", "操作成功");
 				return map1;
@@ -256,7 +258,9 @@ public class RedirectSC {
 			}
 			String urlTask=url+"task="+task;
 			try {
-				request.getRequestDispatcher(url);
+				System.out.println(urlTask);
+				response.sendRedirect(urlTask);
+//				request.getRequestDispatcher(url);
 				Map<String, String> map1 =new HashMap<>();
 				map1.put("ok", "操作成功");
 				return map1;

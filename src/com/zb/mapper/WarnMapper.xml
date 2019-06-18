@@ -67,4 +67,39 @@
 		order by wid desc
 		limit #{index} ,#{size}
 	</select>
+	
+	<sql id="getAllWarn">
+	<if test="deviceNum!=null and deviceNum != ''">
+            and d.deviceNum=#{deviceNum}
+        </if>
+        <if test="deviceDes!=null and deviceDes != ''">
+              and d.deviceDes=#{deviceDes}
+        </if>
+	</sql>
+	<select id="selectWarn" resultMap="warnCombMap">
+    select w.wid,w.warnInfo,DATE_FORMAT(w.createTime,'%Y-%m-%d %H:%i:%s') as wcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.pid as dpid,s.sensorName as deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime 
+        from db_warn w, db_project p, db_deviceinfo d ,db_sensorinfo s where  d.deviceName=s.sensid and  w.pid = p.pid and w.deviceNum = d.deviceNum
+        <include refid="getAllWarn"></include>
+        order by wid desc
+    </select>
+    
+    <sql id="getByPidDWarn">
+        <if test="deviceDes!=null and deviceDes != ''">
+            and d.deviceDes=#{deviceDes}
+        </if>
+        
+        <if test="pid!=null and pid != ''">
+            and p.pid=#{pid}
+        </if>
+    </sql>
+    <select id="selectByPidDWarn" resultMap="warnCombMap">
+    select w.wid,w.warnInfo,DATE_FORMAT(w.createTime,'%Y-%m-%d %H:%i:%s') as wcreateTime,
+        p.pid,p.projectName,p.projectAddress,p.log,p.lat,p.projectInfo,p.projectImg,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%s') as pcreateTime,
+        d.did,d.pid as dpid,s.sensorName as deviceName,d.deviceNum,d.deviceDes,DATE_FORMAT(d.createTime,'%Y-%m-%d %H:%i:%s') as dcreateTime 
+        from db_warn w, db_project p, db_deviceinfo d ,db_sensorinfo s where  d.deviceName=s.sensid and  w.pid = p.pid and w.deviceNum = d.deviceNum
+         <include refid="getByPidDWarn"></include>
+         order by wid desc
+    </select>
 </mapper>
