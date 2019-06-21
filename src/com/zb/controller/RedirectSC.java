@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.Mac;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,6 +22,7 @@ import com.zb.entity.ControlLog;
 import com.zb.mapper.ControlMapper;
 import com.zb.mapper.DeviceInfoMapper;
 import com.zb.mapper.SensorNowdataMapper;
+import com.zb.util.HttpUtil;
 
 @Controller
 public class RedirectSC {
@@ -68,7 +68,7 @@ public class RedirectSC {
 		System.out.println(gate);
 		String device=deviceNum.substring(11, deviceNum.length());
 		System.out.println(device);
-		String url="http://120.55.69.237:8087?"+"gate="+gate+"&device="+device+"&";
+		String url="http://www.longyuanspace.com:8087?"+"gate="+gate+"&device="+device+"&";
 		
 		if (op!=null&&!op.equals("")) {
 			if (op.length()<3) {
@@ -130,8 +130,9 @@ public class RedirectSC {
 			String urlOp=url+"op="+op;
 			System.out.println(urlOp);
 			try {
-				response.sendRedirect(urlOp);
+//				response.sendRedirect(urlOp);
 //				request.getRequestDispatcher(url);
+				HttpUtil.doGet(urlOp);
 				Map<String, String> map1 =new HashMap<>();
 				map1.put("ok", "操作成功");
 				return map1;
@@ -259,8 +260,9 @@ public class RedirectSC {
 			String urlTask=url+"task="+task;
 			try {
 				System.out.println(urlTask);
-				response.sendRedirect(urlTask);
+//				response.sendRedirect(urlTask);
 //				request.getRequestDispatcher(url);
+				HttpUtil.doGet(urlTask);
 				Map<String, String> map1 =new HashMap<>();
 				map1.put("ok", "操作成功");
 				return map1;
